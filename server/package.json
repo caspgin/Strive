@@ -7,14 +7,18 @@
     "author": "",
     "main": "index.js",
     "scripts": {
-        "start": "node index.mjs",
-        "dev": "nodemon index.mjs",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node ./src/index.mjs",
+        "dev": "nodemon ./src/index.mjs",
+        "test": "mocha src/test/**/*.mjs"
     },
     "dependencies": {
-        "express": "^5.1.0"
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "pg": "^8.15.5"
     },
     "devDependencies": {
+        "chai": "^5.2.0",
+        "mocha": "^11.1.0",
         "nodemon": "^3.1.10"
     }
 }
