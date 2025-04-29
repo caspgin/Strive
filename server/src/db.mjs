@@ -1,13 +1,19 @@
 import { Client } from 'pg';
 import config from './config.mjs';
 
-const client = new Client({
+export const client = new Client({
 	...config.database,
 });
 
-client
-	.connect()
-	.then(() => console.log('connected to PG'))
-	.catch((err) => console.error('Connection error', err.stack));
+export const connectToDB = async () => {
+	try {
+		await client.connect();
+		console.log('DB connected');
+	} catch (error) {
+		console.log('DB connection failed', error.message);
+		console.log(error.stack);
 
-export default client;
+		console.log('Shutting down... ');
+		process.exit(1);
+	}
+};

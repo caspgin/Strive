@@ -9,7 +9,7 @@
     "scripts": {
         "start": "node ./src/index.mjs",
         "dev": "nodemon ./src/index.mjs",
-        "test": "mocha src/test/**/*.mjs"
+        "test": "mocha ./src/test/*/*.mjs"
     },
     "dependencies": {
         "dotenv": "^16.5.0",
@@ -19,6 +19,7 @@
     "devDependencies": {
         "chai": "^5.2.0",
         "mocha": "^11.1.0",
-        "nodemon": "^3.1.10"
+        "nodemon": "^3.1.10",
+        "sinon": "^20.0.0"
     }
 }
