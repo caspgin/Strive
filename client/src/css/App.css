@@ -1,0 +1,16 @@
+:root {
+	--taskList-background: #131314;
+	--task-not-active: 'transparent';
+	--task-active: #232428;
+}
+
+.material-symbols-outlined {
+	font-size: 1.6rem;
+	color: white;
+}
+
+#app {
+	background-color: var(--taskList-background);
+	width: max-content;
+	padding: 1rem 4px;
+}
