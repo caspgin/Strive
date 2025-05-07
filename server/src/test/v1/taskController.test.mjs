@@ -26,7 +26,7 @@ describe('task controller v1 api test3', () => {
 	describe('create Tasks', () => {
 		it('should create a task and return 201', async () => {
 			const fakeTask = { rows: [{ id: 1, name: 'test3 task' }] };
-			req.body = { title: 'test3 Task' };
+			req.body = { name: 'test3 Task' };
 			sinon.stub(client, 'query').resolves(fakeTask);
 
 			await taskController.create(req, res);
@@ -43,7 +43,7 @@ describe('task controller v1 api test3', () => {
 		});
 
 		it('should return 500 status code and a message', async () => {
-			req.body = { title: 'test3 Task' };
+			req.body = { name: 'test3 Task' };
 			sinon.stub(client, 'query').rejects(new Error('DB error'));
 
 			await taskController.create(req, res);
@@ -79,7 +79,7 @@ describe('task controller v1 api test3', () => {
 		});
 
 		it('should return 500 status code and a message', async () => {
-			req.body = { title: 'New Task' };
+			req.body = { name: 'New Task' };
 			sinon.stub(client, 'query').rejects(new Error('DB error'));
 
 			await taskController.getById(req, res);
@@ -120,7 +120,7 @@ describe('task controller v1 api test3', () => {
 	describe('Remove Task by id ', () => {
 		it('should delete task and return code 204', async () => {
 			req.params = { id: 1 };
-			const fakeTask = { rowCount: 1, rows: [{ id: 1, title: 'test' }] };
+			const fakeTask = { rowCount: 1, rows: [{ id: 1, name: 'test' }] };
 			sinon.stub(client, 'query').resolves(fakeTask);
 
 			await taskController.remove(req, res);
@@ -166,10 +166,10 @@ describe('task controller v1 api test3', () => {
 	describe('Edit Task by id ', () => {
 		it('should edit task and return code 204', async () => {
 			req.params = { id: 1 };
-			req.body = { title: 'Update test' };
+			req.body = { name: 'Update test' };
 			const fakeTask = {
 				rowCount: 1,
-				rows: [{ id: 1, title: 'Update test' }],
+				rows: [{ id: 1, name: 'Update test' }],
 			};
 			sinon.stub(client, 'query').resolves(fakeTask);
 
@@ -191,7 +191,7 @@ describe('task controller v1 api test3', () => {
 
 		it('should return 400 and message invalid task', async () => {
 			req.params = { id: 1 };
-			req.body = { title: '' };
+			req.body = { name: '' };
 
 			await taskController.editbyId(req, res);
 
@@ -202,7 +202,7 @@ describe('task controller v1 api test3', () => {
 
 		it('should return 204 with message', async () => {
 			req.params = { id: 5 };
-			req.body = { title: 'test' };
+			req.body = { name: 'test' };
 			const fakeTask = { rowCount: 0 };
 			sinon.stub(client, 'query').resolves(fakeTask);
 

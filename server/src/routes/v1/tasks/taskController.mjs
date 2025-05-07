@@ -4,14 +4,14 @@ export const create = async (request, response) => {
 	try {
 		// TODO: Validate and add the task to database
 
-		const { title } = request.body || {};
-		if (!title) {
+		const { name } = request.body || {};
+		if (!name) {
 			response.status(400).json({ error: 'task name can not be empty' });
 		}
 
 		const query = 'INSERT INTO tasks (name) VALUES ($1) RETURNING *';
 
-		const values = [title];
+		const values = [name];
 
 		const res = await client.query(query, values);
 
@@ -71,16 +71,16 @@ export const editbyId = async (request, response) => {
 		const { id } = request.params || null;
 		const idNum = Number(id);
 
-		const { title } = request.body || null;
-
-		if (!idNum || !Number.isInteger(idNum) || !title) {
+		const { name } = request.body || null;
+		console.log(name);
+		if (!idNum || !Number.isInteger(idNum) || !name) {
 			return response
 				.status(400)
 				.json({ err: 'invalid id or invalid task.' });
 		}
 
 		const query = 'UPDATE tasks SET name = $1 WHERE id = $2 RETURNING *';
-		const values = [title, idNum];
+		const values = [name, idNum];
 		const result = await client.query(query, values);
 
 		if (!result.rowCount) {
