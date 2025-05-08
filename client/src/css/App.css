@@ -2,6 +2,9 @@
 	--taskList-background: #131314;
 	--task-not-active: 'transparent';
 	--task-active: #232428;
+	--addTask-background-hover: #1f2226;
+	--addTask-color: #a0bded;
+	--taskIcon-background-hover: #3f4040;
 }
 
 .material-symbols-outlined {

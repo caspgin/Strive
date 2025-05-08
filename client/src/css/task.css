@@ -1,7 +1,8 @@
 .tasks {
-	width: 300px;
+	width: 320px;
 	background-color: var(--task-not-active);
 	padding: 5px 5px;
+	margin-bottom: 2px;
 
 	&:hover {
 		background-color: var(--task-active);
@@ -12,13 +13,21 @@
 		gap: 4px;
 
 		&>div.taskIcon {
+			padding: 4px;
+
 			button {
 				all: unset;
 				display: block;
-				padding: 4px;
+				padding: 2px;
+				border-radius: 100%;
+
+				&:hover {
+					background-color: var(--taskIcon-background-hover);
+				}
 
 				span {
 					display: block;
+					cursor: pointer;
 				}
 			}
 		}
@@ -30,10 +39,18 @@
 			font-size: 1.2rem;
 			width: 100%;
 
+			&>div.complete {
+				span {
+					text-decoration: line-through;
+				}
+			}
+
 			&>div.taskName {
 				width: 100%;
 				height: 100%;
 				overflow-wrap: anywhere;
+				align-self: center;
+				padding: 2px 0;
 
 				&>textarea {
 					all: unset;
@@ -46,6 +63,30 @@
 
 				&>span {
 					display: block;
+					cursor: default;
+					height: 100%;
+				}
+			}
+		}
+
+		&>div.deleteContainer {
+			padding: 2px;
+			align-self: start;
+
+			&>div.delete {
+				&>button {
+					all: unset;
+					padding: 4px;
+					border-radius: 100%;
+					cursor: pointer;
+
+					&:hover {
+						background-color: var(--taskIcon-background-hover);
+					}
+
+					&>span {
+						display: block;
+					}
 				}
 			}
 		}

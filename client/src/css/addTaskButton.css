@@ -1,0 +1,34 @@
+.createContainer {
+	padding: 5px 5px;
+	min-width: 320px;
+
+	button {
+		all: unset;
+		width: 100%;
+		display: flex;
+		gap: 1rem;
+		font-size: 1rem;
+		align-items: center;
+		padding: 5px 10px;
+		box-sizing: border-box;
+		border-radius: 50px;
+
+		&:hover {
+			background-color: var(--addTask-background-hover);
+		}
+
+		&>div:nth-of-type(1) {
+			width: fit-content;
+
+			&>span {
+				display: block;
+				color: var(--addTask-color);
+				font-size: 1.5rem;
+			}
+		}
+
+		&>div:nth-of-type(2) {
+			color: var(--addTask-color);
+		}
+	}
+}

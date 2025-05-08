@@ -12,6 +12,11 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+*,
+button {
+	box-sizing: border-box;
+}
+
 body {
 	margin: 0;
 	display: flex;
