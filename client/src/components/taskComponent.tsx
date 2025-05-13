@@ -7,7 +7,7 @@ export interface TaskProps {
     onDelete?: (id: number) => void;
     onUpdate?: (task: TaskType) => void;
     newTask?: boolean;
-    onNewTask?: (name: string) => void;
+    onNewTask?: (task: TaskType) => void;
 }
 
 export const Task = ({
@@ -17,8 +17,9 @@ export const Task = ({
     newTask,
     onNewTask,
 }: TaskProps) => {
+    const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
     const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
-    const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState<boolean>(newTask || false);
     const [taskName, setTaskName] = useState<string>(() => task.name);
     const [hovered, setHovered] = useState<boolean>(false);
     const [complete, setComplete] = useState<boolean>(false);
@@ -29,18 +30,20 @@ export const Task = ({
         handleInputHeight();
 
         if (!isEditing) {
-            if (taskName && onUpdate) {
+            if (newTask) {
+                newTask = false;
+            } else if (taskName && onUpdate) {
                 if (taskName !== task.name) {
                     onUpdate({ id: task.id, name: taskName });
                 }
             }
         } else {
-            if (isFocused) {
+            if (isFocused && !newTask) {
                 setIsFocused(false);
                 handleSelectionOnFocus();
             }
         }
-    }, [taskName, isEditing, task.id, task.name, onUpdate, isFocused]);
+    }, [taskName, isEditing, isFocused]);
 
     function handleInputHeight() {
         if (textAreaRef.current) {
@@ -68,14 +71,6 @@ export const Task = ({
         setIsEditing(false);
         setTaskName((prev: string) => {
             const trimmed = prev.trimEnd();
-            if (newTask) {
-                newTask = false;
-                if (!trimmed && onDelete) {
-                    onDelete(-1);
-                } else if (trimmed && onNewTask) {
-                    onNewTask(trimmed);
-                }
-            }
             return trimmed;
         });
         if (taskRef.current) {

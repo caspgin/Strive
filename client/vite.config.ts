@@ -7,7 +7,7 @@ export default defineConfig({
     server: {
         proxy: {
             // Proxy requests starting with /api to your backend server
-            '/v1/tasks/': {
+            '^/v[0-9]+/tasks/': {
                 target: 'http://localhost:3000', // your backend server
                 changeOrigin: true,
             },
