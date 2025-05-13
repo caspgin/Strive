@@ -19,11 +19,10 @@ export const updateTask = async (id, task) => {
     const setClause = columns
         .map((field, index) => `${field} = $${index + 1}`)
         .join(',');
-    const query = `UPDATE ${client.schema}.${client.table} SET ${setClause} WHERE id = ${columns.length + 1} RETURNING *`;
+    const query = `UPDATE ${client.schema}.${client.table} SET ${setClause} WHERE id = $${columns.length + 1} RETURNING *`;
 
     const values = columns.map((field) => task[field]);
     values.push(id);
-
     const res = await client.query(query, values);
 
     return res;

@@ -1,17 +1,21 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import '../css/task.css';
-import { TaskType } from '../types/types';
+import { TaskType, UpdateResult } from '../types/types';
+import { TaskIcon } from './taskIcon';
+import { TaskDelete } from './taskDelete';
+import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
 
 export interface TaskProps {
-    task: TaskType;
+    givenTask: TaskType;
     onDelete?: (id: number) => void;
-    onUpdate?: (task: TaskType) => void;
+    onUpdate?: (task: TaskType) => Promise<UpdateResult>;
     newTask?: boolean;
     onNewTask?: (task: TaskType) => void;
 }
 
 export const Task = ({
-    task,
+    givenTask,
     onDelete,
     onUpdate,
     newTask,
@@ -20,71 +24,105 @@ export const Task = ({
     const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
     const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
     const [isFocused, setIsFocused] = useState<boolean>(newTask || false);
-    const [taskName, setTaskName] = useState<string>(() => task.name);
+    const [task, setTask] = useState<TaskType>(() =>
+        cloneDeep(givenTask || {}),
+    );
+    const [ogTask, setOGTask] = useState<TaskType>(() =>
+        cloneDeep(givenTask || {}),
+    );
     const [hovered, setHovered] = useState<boolean>(false);
     const [complete, setComplete] = useState<boolean>(false);
     const taskRef = useRef<HTMLDivElement>(null);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
-        handleInputHeight();
-
+        if (isFocused) {
+            handleFocus();
+        }
         if (!isEditing) {
-            if (newTask) {
-                newTask = false;
-            } else if (taskName && onUpdate) {
-                if (taskName !== task.name) {
-                    onUpdate({ id: task.id, name: taskName });
-                }
-            }
-        } else {
-            if (isFocused && !newTask) {
-                setIsFocused(false);
-                handleSelectionOnFocus();
+            updateTask();
+        }
+    }, [isFocused, isEditing]);
+
+    useEffect(() => {
+        if (isNewTask && !isEditing) {
+            console.log(task, ogTask);
+            setIsNewTask(false);
+            if (isEqual(task, ogTask)) {
+                onDelete?.(-1);
+            } else {
+                onNewTask?.(task);
             }
         }
-    }, [taskName, isEditing, isFocused]);
+    }, [task]);
+
+    useLayoutEffect(() => {
+        handleInputHeight();
+    }, [task.name, isEditing]);
+
+    function updateTask() {
+        if (!isNewTask && !isEqual(task, ogTask)) {
+            onUpdate?.(task).then((result: UpdateResult) => {
+                if (result.success) {
+                    setOGTask(cloneDeep(task));
+                } else {
+                    setTask(cloneDeep(ogTask));
+                }
+            });
+        }
+    }
 
     function handleInputHeight() {
         if (textAreaRef.current) {
+            textAreaRef.current.style.height = '0px';
             textAreaRef.current.style.height =
                 textAreaRef.current.scrollHeight + 'px';
         }
     }
 
-    function handleSelectionOnFocus() {
+    function handleFocus() {
+        //change background on focus
+        if (taskRef.current) {
+            taskRef.current.classList.add('task-active');
+        }
+
+        // Select the taskName on focus
         const textarea = textAreaRef.current;
         if (textarea) {
             textarea.select();
             textarea.setSelectionRange(0, textarea.value.length);
         }
-    }
 
-    function handleFocus() {
-        if (taskRef.current) {
-            taskRef.current.classList.add('task-active');
-        }
-        setIsFocused(true);
+        setIsFocused(false);
     }
 
     function handleBlur() {
         setIsEditing(false);
-        setTaskName((prev: string) => {
-            const trimmed = prev.trimEnd();
-            return trimmed;
+
+        setTask((prev: TaskType) => {
+            const trimmed = prev.name.trim();
+            const updateTask = { ...prev, name: trimmed };
+            return updateTask;
         });
+
         if (taskRef.current) {
             taskRef.current.classList.remove('task-active');
         }
     }
 
     function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        setTaskName(event.target.value);
+        setTask((prev) => {
+            const updateTask = {
+                ...prev,
+                name: event.target.value,
+            };
+            return updateTask;
+        });
     }
 
     function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
         if (
-            !taskName &&
+            !task.name &&
             (event.key === 'Backspace' || event.key === 'Delete')
         ) {
             if (onDelete) {
@@ -96,28 +134,11 @@ export const Task = ({
     return (
         <div className="tasks" ref={taskRef}>
             <div className="taskContainer">
-                <div className="taskIcon">
-                    <button
-                        className="completionButton"
-                        onMouseEnter={() => setHovered(true)}
-                        onMouseLeave={() => setHovered(false)}
-                        onClick={() => setComplete((prev) => !prev)}
-                    >
-                        {complete ? (
-                            <span className="material-symbols-outlined">
-                                check
-                            </span>
-                        ) : (
-                            <span className="material-symbols-outlined">
-                                {hovered ? 'check' : 'radio_button_unchecked'}
-                            </span>
-                        )}
-                    </button>
-                </div>
+                <TaskIcon {...{ complete, hovered, setHovered, setComplete }} />
                 <div className="taskNameContainer">
                     {complete ? (
                         <div className="taskName complete">
-                            <span>{taskName}</span>
+                            <span>{task.name}</span>
                         </div>
                     ) : (
                         <div
@@ -128,33 +149,22 @@ export const Task = ({
                                 <textarea
                                     spellCheck={false}
                                     ref={textAreaRef}
-                                    value={taskName}
+                                    value={task.name}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    onFocus={handleFocus}
+                                    onFocus={() => setIsFocused(true)}
                                     onKeyDown={handleKeyDown}
                                     rows={1}
                                     placeholder="Title"
                                     autoFocus
                                 />
                             ) : (
-                                <span>{taskName}</span>
+                                <span>{task.name}</span>
                             )}
                         </div>
                     )}
                 </div>
-                <div className="deleteContainer">
-                    <div className="delete">
-                        <button
-                            className="deleteButton"
-                            onClick={() => onDelete?.(task.id)}
-                        >
-                            <span className="material-symbols-outlined">
-                                delete
-                            </span>
-                        </button>
-                    </div>
-                </div>
+                <TaskDelete onDelete={onDelete} id={task.id} />
             </div>
         </div>
     );

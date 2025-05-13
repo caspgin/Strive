@@ -57,7 +57,7 @@ export const remove = async (request, response) => {
         }
 
         const query = 'DELETE FROM tasks WHERE id = $1';
-        const values = [45];
+        const values = [idNum];
 
         const result = await client.query(query, values);
         response.status(204).end();

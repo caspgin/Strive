@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './css/App.css';
 import { Task } from './components/taskComponent.tsx';
 import axios from 'axios';
-import { TaskType } from './types/types.js';
+import { TaskType, UpdateResult } from './types/types.js';
 import { AddTaskButton } from './components/addTaskComponent.tsx';
 import { Dropdown } from './components/VersionSettingDropDown.tsx';
 
@@ -16,8 +16,7 @@ function App() {
     useEffect(() => {
         fetchTasks().then(() => {
             tasks.sort();
-            console.log(tasks);
-            setTimeout(() => setLoading(false), 0);
+            setTimeout(() => setLoading(false), 1000);
         });
     }, [version]);
 
@@ -30,17 +29,26 @@ function App() {
         }
     };
 
-    const handleUpdate = async (task: TaskType) => {
+    const handleUpdate = async (task: TaskType): Promise<UpdateResult> => {
         try {
             const { id, ...restTask } = task;
-            await axios.put(`/${version}/tasks/${id}`, { task: restTask });
+            console.log('task', task);
+            await axios.put(`/${version}/tasks/${id}`, {
+                task: restTask,
+            });
+
+            return { success: true };
         } catch (err) {
-            console.log(err);
+            return { success: false, data: err };
         }
     };
 
     const handleDelete = async (id: number) => {
         try {
+            if (id === -1) {
+                setTasks((prev) => prev.filter((value) => value.id !== id));
+                return;
+            }
             await axios.delete(`/${version}/tasks/${id}`);
             setTasks((prev) => prev.filter((value) => value.id !== id));
         } catch (err) {
@@ -61,11 +69,13 @@ function App() {
             .post(`/${version}/tasks/create`, { task: restTask })
             .then((response) => {
                 setTasks((prev) =>
-                    prev.map((value) =>
-                        value.id === -1
-                            ? { ...value, ...response.data }
-                            : value,
-                    ),
+                    prev
+                        .map((value) =>
+                            value.id === -1
+                                ? { ...value, ...response.data }
+                                : value,
+                        )
+                        .sort(),
                 );
             })
             .catch((err) => {
@@ -80,13 +90,13 @@ function App() {
             </div>
             <div>
                 {loading ? (
-                    <Task task={{ name: 'loading', id: -1 }} />
+                    <Task givenTask={{ name: 'loading', id: -1 }} />
                 ) : (
                     <div>
                         <AddTaskButton onEmptyTask={handleEmptyTask} />
                         {tasks.map((value: TaskType) => (
                             <Task
-                                task={value}
+                                givenTask={value}
                                 onDelete={handleDelete}
                                 onUpdate={handleUpdate}
                                 key={value.id}

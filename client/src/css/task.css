@@ -56,9 +56,8 @@
 					all: unset;
 					display: block;
 					width: 100%;
-					overflow-wrap: anywhere;
 					height: 100%;
-					resize: none;
+					box-sizing: border-box;
 				}
 
 				&>span {

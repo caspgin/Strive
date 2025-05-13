@@ -21,7 +21,6 @@ export const update = async (taskData) => {
     const task = new Task(name, time);
 
     const response = await taskRepository.updateTask(id, task);
-
     if (response.rowCount == 0) {
         throw new Error('invalid id or something went wrong. Update Failed');
     }

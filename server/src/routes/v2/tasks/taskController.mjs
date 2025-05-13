@@ -1,4 +1,3 @@
-import { client } from '../../../db.mjs';
 import * as taskService from './taskService.mjs';
 
 export const create = async (request, response) => {
@@ -45,7 +44,6 @@ export const editbyId = async (request, response) => {
         const { id } = request.params || null;
         const { task } = request.body || null;
         const result = await taskService.update({ id, ...task });
-
         return response.status(200).json(result);
     } catch (error) {
         response.status(500).json({ err: error.message });
