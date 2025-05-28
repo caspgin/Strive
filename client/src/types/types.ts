@@ -5,7 +5,7 @@ export interface TaskType {
 	complete?: boolean;
 	date?: Date | null;
 	time?: Time | null;
-	desc?: string;
+	description?: string;
 }
 
 export interface Time {

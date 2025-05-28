@@ -6,6 +6,7 @@ import { TaskType } from './types/types.js';
 import { AddTaskButton } from './components/addTaskComponent.tsx';
 import { Dropdown } from './components/VersionSettingDropDown.tsx';
 import { v4 as uuidv4 } from 'uuid';
+import { normalizeTaskArray } from './utilities/DatePickerUtility.tsx';
 
 function App() {
 	const [loading, setLoading] = useState(true);
@@ -24,10 +25,8 @@ function App() {
 	const fetchTasks = async () => {
 		try {
 			const response = await axios.get(`/${version}/tasks/`);
-			const data: TaskType[] = response.data.map((task: TaskType) => ({
-				...task,
-				uuid: uuidv4(),
-			}));
+			const data: TaskType[] = normalizeTaskArray(response.data);
+			console.log(data);
 			setTasks(() => data);
 		} catch (error) {
 			console.log(error);
@@ -35,6 +34,7 @@ function App() {
 	};
 	const handleUpdate = async (task: TaskType) => {
 		const uuid = task.uuid;
+		console.log(task);
 		axios
 			.put(`/${version}/tasks/${Number(task.id)}`, {
 				task,

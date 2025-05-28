@@ -1,6 +1,18 @@
 export class Task {
-    constructor(taskName, taskTime) {
-        this.name = taskName || null;
-        this.time = taskTime || null;
+    constructor(taskName, taskDate, taskTime, taskCompleted, taskDesc) {
+        this.name = taskName || '';
+        this.time = this.formatTime(taskTime);
+        this.date = taskDate || null;
+        this.completed = taskCompleted || false;
+        this.description = taskDesc || null;
+    }
+
+    formatTime(taskTime) {
+        if (!taskTime) {
+            return null;
+        }
+        const { hours, minutes } = taskTime;
+        const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        return timeString;
     }
 }

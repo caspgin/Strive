@@ -1,5 +1,5 @@
 import { TaskType, Time } from '../types/types';
-
+import { v4 as uuidv4 } from 'uuid';
 export const monthsName = [
 	'Jan',
 	'Feb',
@@ -97,7 +97,25 @@ export function getTimeObj(time: string): Time {
 	return newTime;
 }
 
-export function normalizeTask(task: TaskType) {
-	const id = Number(task.id);
-	return { ...task, id: id };
+export function normalizeTask(data): TaskType {
+	const task: TaskType = { ...data, uuid: uuidv4() };
+	if (data.date) {
+		task.date = new Date(data.date);
+	}
+
+	if (data.time) {
+		const hours = Number(data.time.split(':')[0]);
+		const minutes = Number(data.time.split(':')[1]);
+
+		task.time = { hours, minutes };
+	}
+	return task;
+}
+
+export function normalizeTaskArray(dataArray: []): TaskType[] {
+	if (!dataArray) {
+		return [];
+	} else {
+		return dataArray.map((data) => normalizeTask(data));
+	}
 }

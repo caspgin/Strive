@@ -3,7 +3,7 @@ import * as taskService from './taskService.mjs';
 export const create = async (request, response) => {
     try {
         const { task } = request.body || {};
-        const result = await taskService.create({ ...task });
+        const result = await taskService.create(task);
         response.status(201).json(result);
     } catch (error) {
         response.status(500).json({ err: error.message });

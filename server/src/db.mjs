@@ -21,3 +21,13 @@ export const connectToDB = async () => {
         process.exit(1);
     }
 };
+
+export const closeDB = async () => {
+    try {
+        console.log('DB Disconnecting');
+        await client.end();
+        console.log('DB Disconnected');
+    } catch (err) {
+        console.log('Db Disconnection failed', err);
+    }
+};

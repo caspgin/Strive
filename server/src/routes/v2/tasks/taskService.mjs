@@ -1,4 +1,3 @@
-//import taskRepository
 import * as taskRepository from './taskRepository.mjs';
 import { Task } from './taskSchema.mjs';
 import { idValidation } from './taskServiceValidation.mjs';
@@ -6,19 +5,18 @@ import { idValidation } from './taskServiceValidation.mjs';
 //create
 
 export const create = async (taskData) => {
-    const { name } = taskData;
-    const task = new Task(name);
+    const { name, date, time, completed, description } = taskData;
+    const task = new Task(name, date, time, completed, description);
     const response = await taskRepository.createTask(task);
     return response.rows;
 };
 
 //update
-//
 
 export const update = async (taskData) => {
-    const { id, name, time } = taskData;
+    const { id, name, date, time, completed, description } = taskData;
 
-    const task = new Task(name, time);
+    const task = new Task(name, date, time, completed, description);
 
     const response = await taskRepository.updateTask(id, task);
     if (response.rowCount == 0) {
@@ -41,7 +39,7 @@ export const remove = async (id) => {
 
 //view
 
-export const viewById = async ({ id }) => {
+export const viewById = async (id) => {
     idValidation(id);
 
     const response = await taskRepository.getTask(id);
