@@ -1,0 +1,18 @@
+.descContainer {
+	font-size: 14px;
+
+	.desc {
+		text-align: start;
+		padding: 2px;
+
+		textArea {
+			all: unset;
+			display: block;
+			width: 100%;
+		}
+
+		span {
+			display: block;
+		}
+	}
+}

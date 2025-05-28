@@ -1,0 +1,45 @@
+.startTimeContainer {
+	&>.startTime {
+		display: flex;
+		justify-content: center;
+
+		align-items: center;
+
+		&>div:nth-of-type(1) {
+			padding: 0.2rem 0;
+			width: 20%;
+			height: 100%;
+
+			span {
+				display: block;
+				font-size: 1.3rem;
+			}
+		}
+
+		&>div:nth-of-type(2) {
+			width: 75%;
+
+			&>.dropdown-container {
+				background-color: var(--Time-background-color);
+
+				select {
+					all: unset;
+					display: inline-block;
+
+					width: 80%;
+					margin: 0 auto;
+					padding: 0.2rem 1rem;
+					font-size: 1rem;
+
+					&:focus {
+						border-bottom: 2px solid var(--DatePicker-today-background);
+					}
+
+					option {
+						background-color: var(--taskList-background);
+					}
+				}
+			}
+		}
+	}
+}

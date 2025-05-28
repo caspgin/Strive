@@ -1,0 +1,69 @@
+.taskTimeContainer {
+	display: flex;
+	align-items: center;
+	margin: 0;
+
+	&>button {
+		all: unset;
+		cursor: pointer;
+		display: block;
+		padding: 0.2rem 0.8rem;
+		border: 1px solid var(--Date-border-color);
+		border-radius: 20px;
+
+		background-color: var(--taskList-background);
+
+		span {
+			font-size: 1.3rem;
+			display: block;
+			margin: 0 auto;
+			text-align: center;
+			padding: 0;
+		}
+	}
+
+	&>.taskTimeEdit {
+		display: flex;
+		gap: 2px;
+		background-color: var(--taskList-background);
+		align-items: flex-end;
+
+		/*
+		.displayTime {
+			background-color: red;
+		}
+*/
+		&>div>span {
+			font-size: 1.2rem;
+			line-height: 1rem;
+		}
+	}
+
+	&>.displayTimeContainer {
+		border-radius: 20px;
+		padding: 0.2rem 0.8rem;
+		border: 1px solid var(--Date-border-color);
+		background-color: var(--taskList-background);
+	}
+
+	& .displayTime {
+		font-size: 0.8rem;
+		font-weight: 700;
+
+		&>div {
+			display: inline-block;
+		}
+	}
+
+	& .future {
+		color: var(--Date-color-future);
+	}
+
+	.present {
+		color: var(--Date-color-present);
+	}
+
+	& .past {
+		color: var(--Date-color-past);
+	}
+}
