@@ -2,113 +2,124 @@ import { useEffect, useState } from 'react';
 import './css/App.css';
 import { Task } from './components/taskComponent.tsx';
 import axios from 'axios';
-import { TaskType, UpdateResult } from './types/types.js';
+import { TaskType } from './types/types.js';
 import { AddTaskButton } from './components/addTaskComponent.tsx';
 import { Dropdown } from './components/VersionSettingDropDown.tsx';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
-    const [loading, setLoading] = useState(true);
-    const [tasks, setTasks] = useState<TaskType[]>(() => {
-        return Array<TaskType>();
-    });
-    const [version, setVersion] = useState<string>('v1');
+	const [loading, setLoading] = useState(true);
+	const [tasks, setTasks] = useState<TaskType[]>(() => {
+		return Array<TaskType>();
+	});
+	const [version, setVersion] = useState<string>('v2');
 
-    useEffect(() => {
-        fetchTasks().then(() => {
-            tasks.sort();
-            setTimeout(() => setLoading(false), 1000);
-        });
-    }, [version]);
+	useEffect(() => {
+		fetchTasks().then(() => {
+			tasks.sort();
+			setTimeout(() => setLoading(false), 1000);
+		});
+	}, [version]);
 
-    const fetchTasks = async () => {
-        try {
-            const response = await axios.get(`/${version}/tasks/`);
-            setTasks(() => response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+	const fetchTasks = async () => {
+		try {
+			const response = await axios.get(`/${version}/tasks/`);
+			const data: TaskType[] = response.data.map((task: TaskType) => ({
+				...task,
+				uuid: uuidv4(),
+			}));
+			setTasks(() => data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleUpdate = async (task: TaskType) => {
+		const uuid = task.uuid;
+		axios
+			.put(`/${version}/tasks/${Number(task.id)}`, {
+				task,
+			})
+			.then(() => {
+				setTasks((prev) =>
+					prev.map((value) => (value.uuid === uuid ? task : value)),
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
-    const handleUpdate = async (task: TaskType): Promise<UpdateResult> => {
-        try {
-            const { id, ...restTask } = task;
-            console.log('task', task);
-            await axios.put(`/${version}/tasks/${id}`, {
-                task: restTask,
-            });
+	const handleDelete = async (uuid: string, id?: number) => {
+		try {
+			if (id !== undefined) {
+				await axios.delete(`/${version}/tasks/${id}`);
+			}
+			setTasks((prev) => prev.filter((value) => value.uuid !== uuid));
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
-            return { success: true };
-        } catch (err) {
-            return { success: false, data: err };
-        }
-    };
+	const handleNewTask = (task: TaskType) => {
+		const uuid = task.uuid;
+		axios
+			.post(`/${version}/tasks/create`, { task })
+			.then((response) => {
+				setTasks((prev) =>
+					prev
+						.map((value) =>
+							value.uuid === uuid
+								? { ...response.data, uuid: uuid }
+								: value,
+						)
+						.sort(),
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
-    const handleDelete = async (id: number) => {
-        try {
-            if (id === -1) {
-                setTasks((prev) => prev.filter((value) => value.id !== id));
-                return;
-            }
-            await axios.delete(`/${version}/tasks/${id}`);
-            setTasks((prev) => prev.filter((value) => value.id !== id));
-        } catch (err) {
-            console.log(err);
-        }
-    };
+	const handleEmptyTask = () => {
+		const task: TaskType = {
+			uuid: uuidv4(),
+			name: '',
+		};
 
-    const handleEmptyTask = () => {
-        const task: TaskType = {
-            id: -1,
-            name: '',
-        };
-        setTasks((prev) => Array<TaskType>(task, ...prev));
-    };
-    const handleNewTask = (task: TaskType) => {
-        const { id, ...restTask } = task;
-        axios
-            .post(`/${version}/tasks/create`, { task: restTask })
-            .then((response) => {
-                setTasks((prev) =>
-                    prev
-                        .map((value) =>
-                            value.id === -1
-                                ? { ...value, ...response.data }
-                                : value,
-                        )
-                        .sort(),
-                );
-            })
-            .catch((err) => {
-                console.log(err);
-                setTasks((prev) => prev.filter((value) => value.id !== -1));
-            });
-    };
-    return (
-        <div id="app">
-            <div>
-                <Dropdown version={version} setVersion={setVersion} />
-            </div>
-            <div>
-                {loading ? (
-                    <Task givenTask={{ name: 'loading', id: -1 }} />
-                ) : (
-                    <div>
-                        <AddTaskButton onEmptyTask={handleEmptyTask} />
-                        {tasks.map((value: TaskType) => (
-                            <Task
-                                givenTask={value}
-                                onDelete={handleDelete}
-                                onUpdate={handleUpdate}
-                                key={value.id}
-                                newTask={value.id === -1}
-                                onNewTask={handleNewTask}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+		setTasks((prev) => [task, ...prev]);
+		console.log(tasks);
+	};
+	return (
+		<div id="app">
+			<div>
+				<Dropdown version={version} setVersion={setVersion} />
+			</div>
+			<div>
+				{loading ? (
+					<Task
+						givenTask={{
+							name: 'loading',
+							uuid: uuidv4(),
+						}}
+					/>
+				) : (
+					<div>
+						<AddTaskButton onEmptyTask={handleEmptyTask} />
+						{tasks.map((value: TaskType) => (
+							<Task
+								givenTask={value}
+								onDelete={handleDelete}
+								onUpdate={handleUpdate}
+								key={value.uuid}
+								newTask={value.id == undefined}
+								onNewTask={handleNewTask}
+							/>
+						))}
+					</div>
+				)}
+			</div>
+		</div>
+	);
 }
 
 export default App;

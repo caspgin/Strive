@@ -8,6 +8,10 @@
 		background-color: var(--task-active);
 	}
 
+	&:focus-within {
+		background-color: var(--task-active);
+	}
+
 	&>div.taskContainer {
 		display: flex;
 		gap: 4px;
@@ -32,38 +36,29 @@
 			}
 		}
 
-		&>div.taskNameContainer {
+		&>div.taskData {
 			flex-grow: 1;
-			min-width: 0;
-			text-align: start;
-			font-size: 1.2rem;
-			width: 100%;
 
-			&>div.complete {
-				span {
-					text-decoration: line-through;
-				}
+			&>* {
+				margin-top: 0.2rem;
 			}
 
-			&>div.taskName {
-				width: 100%;
-				height: 100%;
-				overflow-wrap: anywhere;
-				align-self: center;
-				padding: 2px 0;
+			.taskNameContainer {
+				margin-top: 0;
+			}
 
-				&>textarea {
+			&>.editButtonContainer {
+				display: flex;
+				justify-content: flex-end;
+				padding: 2px;
+
+				&>button.editButton {
 					all: unset;
-					display: block;
-					width: 100%;
-					height: 100%;
-					box-sizing: border-box;
-				}
-
-				&>span {
-					display: block;
-					cursor: default;
-					height: 100%;
+					font-size: 1rem;
+					padding: 0.5rem 1.5rem;
+					border-radius: 10px;
+					background-color: var(--editButton-background);
+					color: var(--editButton-color);
 				}
 			}
 		}
@@ -90,8 +85,4 @@
 			}
 		}
 	}
-}
-
-.task-active {
-	background-color: var(--task-active);
 }

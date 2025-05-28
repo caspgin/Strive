@@ -5,6 +5,16 @@
 	--addTask-background-hover: #1f2226;
 	--addTask-color: #a0bded;
 	--taskIcon-background-hover: #3f4040;
+	--editButton-background: #9bbbef;
+	--editButton-color: #062e6f;
+	--DatePicker-background: #282a2c;
+	--DatePicker-selected-background: #a8c7fa;
+	--DatePicker-today-background: #4988ba;
+	--Date-border-color: #5f6368;
+	--Date-color-present: #8ab4f8;
+	--Date-color-future: #c4c7c5;
+	--Date-color-past: #f2b8b5;
+	--Time-background-color: #333537;
 }
 
 .material-symbols-outlined {

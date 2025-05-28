@@ -1,171 +1,89 @@
-import { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { useState, useRef } from 'react';
 import '../css/task.css';
-import { TaskType, UpdateResult } from '../types/types';
+import { TaskType } from '../types/types';
 import { TaskIcon } from './taskIcon';
 import { TaskDelete } from './taskDelete';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
+import { TaskName } from './taskName';
+import { TaskTime } from './taskTime';
+import { TaskDesc } from './taskDesc';
 
 export interface TaskProps {
-    givenTask: TaskType;
-    onDelete?: (id: number) => void;
-    onUpdate?: (task: TaskType) => Promise<UpdateResult>;
-    newTask?: boolean;
-    onNewTask?: (task: TaskType) => void;
+	givenTask: TaskType;
+	onDelete?: (uuid: string, id?: number) => void;
+	onUpdate?: (task: TaskType) => void;
+	newTask?: boolean;
+	onNewTask?: (task: TaskType) => void;
 }
 
 export const Task = ({
-    givenTask,
-    onDelete,
-    onUpdate,
-    newTask,
-    onNewTask,
+	givenTask,
+	onDelete,
+	onUpdate,
+	newTask,
+	onNewTask,
 }: TaskProps) => {
-    const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
-    const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
-    const [isFocused, setIsFocused] = useState<boolean>(newTask || false);
-    const [task, setTask] = useState<TaskType>(() =>
-        cloneDeep(givenTask || {}),
-    );
-    const [ogTask, setOGTask] = useState<TaskType>(() =>
-        cloneDeep(givenTask || {}),
-    );
-    const [hovered, setHovered] = useState<boolean>(false);
-    const [complete, setComplete] = useState<boolean>(false);
-    const taskRef = useRef<HTMLDivElement>(null);
-    const textAreaRef = useRef<HTMLTextAreaElement>(null);
+	const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
+	const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
+	const [task, setTask] = useState<TaskType>(() =>
+		cloneDeep(givenTask || {}),
+	);
+	const [ogTask] = useState<TaskType>(() => cloneDeep(givenTask || {}));
+	const [isComplete, setIsComplete] = useState<boolean>(false);
+	const taskRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        if (isFocused) {
-            handleFocus();
-        }
-        if (!isEditing) {
-            updateTask();
-        }
-    }, [isFocused, isEditing]);
+	function updateTask() {
+		if (isNewTask) {
+			setIsNewTask(false);
+			if (isEqual(task, ogTask)) {
+				onDelete?.(task.uuid);
+			} else {
+				onNewTask?.(task);
+			}
+		} else {
+			if (!isEqual(task, ogTask)) {
+				onUpdate?.(task);
+			}
+		}
+	}
 
-    useEffect(() => {
-        if (isNewTask && !isEditing) {
-            console.log(task, ogTask);
-            setIsNewTask(false);
-            if (isEqual(task, ogTask)) {
-                onDelete?.(-1);
-            } else {
-                onNewTask?.(task);
-            }
-        }
-    }, [task]);
+	function handleFocus() {
+		if (!isEditing) {
+			setIsEditing(true);
+		}
+	}
 
-    useLayoutEffect(() => {
-        handleInputHeight();
-    }, [task.name, isEditing]);
+	function handleBlur() {
+		setIsEditing(false);
+		updateTask();
+	}
 
-    function updateTask() {
-        if (!isNewTask && !isEqual(task, ogTask)) {
-            onUpdate?.(task).then((result: UpdateResult) => {
-                if (result.success) {
-                    setOGTask(cloneDeep(task));
-                } else {
-                    setTask(cloneDeep(ogTask));
-                }
-            });
-        }
-    }
-
-    function handleInputHeight() {
-        if (textAreaRef.current) {
-            textAreaRef.current.style.height = '0px';
-            textAreaRef.current.style.height =
-                textAreaRef.current.scrollHeight + 'px';
-        }
-    }
-
-    function handleFocus() {
-        //change background on focus
-        if (taskRef.current) {
-            taskRef.current.classList.add('task-active');
-        }
-
-        // Select the taskName on focus
-        const textarea = textAreaRef.current;
-        if (textarea) {
-            textarea.select();
-            textarea.setSelectionRange(0, textarea.value.length);
-        }
-
-        setIsFocused(false);
-    }
-
-    function handleBlur() {
-        setIsEditing(false);
-
-        setTask((prev: TaskType) => {
-            const trimmed = prev.name.trim();
-            const updateTask = { ...prev, name: trimmed };
-            return updateTask;
-        });
-
-        if (taskRef.current) {
-            taskRef.current.classList.remove('task-active');
-        }
-    }
-
-    function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        setTask((prev) => {
-            const updateTask = {
-                ...prev,
-                name: event.target.value,
-            };
-            return updateTask;
-        });
-    }
-
-    function handleKeyDown(event: React.KeyboardEvent<HTMLTextAreaElement>) {
-        if (
-            !task.name &&
-            (event.key === 'Backspace' || event.key === 'Delete')
-        ) {
-            if (onDelete) {
-                onDelete(task.id);
-            }
-        }
-    }
-
-    return (
-        <div className="tasks" ref={taskRef}>
-            <div className="taskContainer">
-                <TaskIcon {...{ complete, hovered, setHovered, setComplete }} />
-                <div className="taskNameContainer">
-                    {complete ? (
-                        <div className="taskName complete">
-                            <span>{task.name}</span>
-                        </div>
-                    ) : (
-                        <div
-                            className="taskName"
-                            onClick={() => setIsEditing(true)}
-                        >
-                            {isEditing ? (
-                                <textarea
-                                    spellCheck={false}
-                                    ref={textAreaRef}
-                                    value={task.name}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    onFocus={() => setIsFocused(true)}
-                                    onKeyDown={handleKeyDown}
-                                    rows={1}
-                                    placeholder="Title"
-                                    autoFocus
-                                />
-                            ) : (
-                                <span>{task.name}</span>
-                            )}
-                        </div>
-                    )}
-                </div>
-                <TaskDelete onDelete={onDelete} id={task.id} />
-            </div>
-        </div>
-    );
+	return (
+		<div className="tasks" ref={taskRef} onClick={handleFocus}>
+			<div className="taskContainer">
+				<TaskIcon {...{ isComplete, setIsComplete }} />
+				<div className="taskData">
+					<TaskName
+						{...{
+							isComplete,
+							isEditing,
+							task,
+							setTask,
+						}}
+					/>
+					<TaskDesc {...{ isEditing, task, setTask }} />
+					<TaskTime {...{ task, isEditing, setTask }} />
+					<div className="editButtonContainer">
+						{isEditing ? (
+							<button onClick={handleBlur} className="editButton">
+								Done
+							</button>
+						) : null}
+					</div>
+				</div>
+				<TaskDelete {...{ onDelete, uuid: task.uuid, id: task.id }} />
+			</div>
+		</div>
+	);
 };
