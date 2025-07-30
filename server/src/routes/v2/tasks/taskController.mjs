@@ -4,7 +4,6 @@ import * as taskService from './taskService.mjs';
 export const create = async (request, response) => {
 	try {
 		const { task } = request.body || {};
-		console.log('Taskcontroller task: ', task);
 		const result = await taskService.create(task);
 		response.status(201).json(result);
 	} catch (error) {

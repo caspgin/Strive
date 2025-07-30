@@ -12,9 +12,13 @@ const config = {
 			user: process.env.DEV_DB_PGUSER,
 			password: process.env.DEV_DB_PASSWORD,
 		},
-		dbSchema: {
-			schema: process.env.DEV_DB_SCHEMA,
-			table: process.env.DEV_DB_TABLE,
+		dbTaskSchema: {
+			schema: process.env.DEV_DB_TASK_SCHEMA,
+			table: process.env.DEV_DB_TASK_TABLE,
+		},
+		dbUserSchema: {
+			schema: process.env.DEV_DB_USER_SCHEMA,
+			table: process.env.DEV_DB_USER_TABLE,
 		},
 	},
 	production: { port: 4000 },

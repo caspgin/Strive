@@ -7,7 +7,6 @@ import { idValidation } from './taskServiceValidation.mjs';
 export const create = async (taskData) => {
 	const { name, date, time, completed, description } = taskData;
 	const task = new Task(name, date, time, completed, description);
-	console.log('task values:', name, date, time, completed, description);
 	const response = await taskRepository.createTask(task);
 	return response.rows;
 };
