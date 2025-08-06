@@ -1,55 +1,59 @@
 import * as taskRepository from './taskRepository.mjs';
 import { Task } from './taskSchema.mjs';
 import { idValidation } from './taskServiceValidation.mjs';
-
+import {
+    ParentTaskNotFoundError,
+    ParentIsSubError,
+} from './../error/customErrors.mjs';
 //create
 
 export const create = async (taskData) => {
-	const { name, date, time, completed, description } = taskData;
-	const task = new Task(name, date, time, completed, description);
-	const response = await taskRepository.createTask(task);
-	return response.rows;
+    const { name, date, time, completed, description, parentid } = taskData;
+    const task = new Task(name, date, time, completed, description, parentid);
+    if (parentid != null) {
+        const parentTask = await getTaskById(parentid);
+        if (!parentTask) {
+            throw new ParentTaskNotFoundError(
+                'Invalid parent task. Task creation Failed',
+            );
+        }
+        if (parentTask.parentid != null) {
+            throw new ParentIsSubError('Parent task cannot be a sub task');
+        }
+    }
+    const result = await taskRepository.createTask(task);
+    return result;
 };
 
 //update
 
 export const update = async (taskData) => {
-	const { id, name, date, time, completed, description } = taskData;
+    const { id, name, date, time, completed, description } = taskData;
 
-	const task = new Task(name, date, time, completed, description);
+    const task = new Task(name, date, time, completed, description);
 
-	const response = await taskRepository.updateTask(id, task);
-	if (response.rowCount == 0) {
-		throw new Error('invalid id or something went wrong. Update Failed');
-	}
-	return response.rows;
+    const result = await taskRepository.updateTask(id, task);
+    return result;
 };
 
 //delete
 
 export const remove = async (id) => {
-	idValidation(id);
+    idValidation(id);
 
-	const response = await taskRepository.deleteTask(id);
-	if (!response) {
-		throw new Error('Something went Wrong');
-	}
-	return response.rowCount;
+    const count = await taskRepository.deleteTask(id);
+    return count;
 };
 
 //view
 
-export const viewById = async (id) => {
-	idValidation(id);
+export const getTaskById = async (id) => {
+    idValidation(id);
 
-	const response = await taskRepository.getTask(id);
-
-	if (!response.rowCount) {
-		return response.rowCount;
-	}
-	return response.rows;
+    const result = await taskRepository.getTaskById(id);
+    return result;
 };
 
 export const viewAll = async () => {
-	return await taskRepository.getAllTasks();
+    return await taskRepository.getAllTasks();
 };
