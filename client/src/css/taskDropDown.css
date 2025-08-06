@@ -1,0 +1,51 @@
+.taskDropDown {
+	position: relative;
+
+	/*3c4043*/
+	.dropdown-button {
+		all: unset;
+		cursor: pointer;
+	}
+
+	.dropdown-menu-container {
+		font-size: 1rem;
+		font-weight: 600;
+		position: absolute;
+		right: 0;
+		width: 12vw;
+		border-radius: 10px;
+		background-color: #36373a;
+		padding: 0.6em 0em;
+	}
+
+	.dropdown-menu {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+	}
+
+	.dropdown-item {
+		all: unset;
+		cursor: pointer;
+		display: flex;
+		gap: 2%;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		padding: 0.2rem 0;
+
+		&>span:first-child {
+			font-size: 1.3rem;
+			width: 20%;
+		}
+
+		&>span:last-child {
+			width: 70%;
+			text-align: left;
+		}
+	}
+
+	.dropdown-item:hover {
+		background-color: #3c4043;
+	}
+}

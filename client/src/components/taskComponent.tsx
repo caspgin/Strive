@@ -1,13 +1,13 @@
 import { useState, useRef } from 'react';
 import '../css/task.css';
 import { TaskType } from '../types/types';
-import { TaskIcon } from './taskIcon';
-import { TaskDelete } from './taskDelete';
+import { TaskIcon } from './TaskIcon';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
-import { TaskName } from './taskName';
-import { TaskTime } from './taskTime';
-import { TaskDesc } from './taskDesc';
+import { TaskName } from './TaskName';
+import { TaskTime } from './TaskTime';
+import { TaskDesc } from './TaskDesc';
+import { TaskDropDown } from './TaskDropDown';
 
 export interface TaskProps {
     givenTask: TaskType;
@@ -15,6 +15,7 @@ export interface TaskProps {
     onUpdate?: (task: TaskType) => void;
     newTask?: boolean;
     onNewTask?: (task: TaskType) => void;
+    onEmptyTask?: (id?: number) => void;
 }
 
 export const Task = ({
@@ -23,26 +24,27 @@ export const Task = ({
     onUpdate,
     newTask,
     onNewTask,
+    onEmptyTask,
 }: TaskProps) => {
     const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
     const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
     const [task, setTask] = useState<TaskType>(() =>
         cloneDeep(givenTask || {}),
     );
-    const [ogTask] = useState<TaskType>(() => cloneDeep(givenTask || {}));
+    const ogTaskRef = useRef<TaskType>(cloneDeep(givenTask || {}));
     const taskRef = useRef<HTMLDivElement>(null);
-
+    const isSubTask: boolean = task.parentid != null;
     function updateTask() {
         if (isNewTask) {
             setIsNewTask(false);
-            if (isEqual(task, ogTask)) {
+            if (isEqual(task, ogTaskRef.current)) {
                 onDelete?.(task.uuid);
             } else {
                 onNewTask?.(task);
             }
         } else {
-            if (!isEqual(task, ogTask)) {
-                console.log('not Equal Called');
+            if (!isEqual(task, ogTaskRef.current)) {
                 onUpdate?.(task);
             }
         }
@@ -56,11 +58,26 @@ export const Task = ({
 
     function handleBlur() {
         setIsEditing(false);
+        setIsHovered(false);
         updateTask();
     }
 
+    function handleOnDelete() {
+        onDelete?.(task.uuid, task.id);
+    }
+
+    function handleOnEmptyTask() {
+        onEmptyTask?.(task.id);
+    }
+
     return (
-        <div className="tasks" ref={taskRef} onClick={handleFocus}>
+        <div
+            className={`tasks ${isSubTask && 'subTask'} `}
+            ref={taskRef}
+            onClick={handleFocus}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <div className="taskContainer">
                 <TaskIcon {...{ task, setTask }} />
                 <div className="taskData">
@@ -81,7 +98,17 @@ export const Task = ({
                         ) : null}
                     </div>
                 </div>
-                <TaskDelete {...{ onDelete, uuid: task.uuid, id: task.id }} />
+                {!isNewTask && (
+                    <TaskDropDown
+                        {...{
+                            isEditing,
+                            isHovered,
+                            handleOnDelete,
+                            handleOnEmptyTask,
+                            isSubTask,
+                        }}
+                    />
+                )}
             </div>
         </div>
     );
