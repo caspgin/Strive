@@ -1,0 +1,77 @@
+.listComponent {
+	margin: 0 4px 4px;
+	border-radius: 1rem;
+	min-width: 300px;
+	max-width: 300px;
+	overflow: clip;
+	max-height: 100%;
+	position: relative;
+
+	&>div {
+		background-color: var(--taskList-background);
+		width: 100%;
+		border: 1px solid transparent;
+		border-radius: 1rem;
+		display: flex;
+		flex-direction: column;
+		overflow: inherit;
+		max-height: 100%;
+	}
+
+	.listHeader {
+		position: sticky;
+		z-index: 3000;
+		top: 0;
+		cursor: grab;
+
+		.title {
+			display: flex;
+
+			.listTitle {
+				margin-left: 1rem;
+				margin-top: 0.5rem;
+				padding: 0.5rem 0;
+				color: var(--tasks-on-background);
+				font-size: 1.3rem;
+				font-weight: 400;
+				line-height: 1.5rem;
+				letter-spacing: 0;
+				text-align: left;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				flex: 1 1;
+			}
+
+			.listSetting {
+				margin-top: 0.5rem;
+				padding: 0.25rem 0.5rem;
+				display: grid;
+				place-content: center;
+
+				&>span {
+					color: #9aa0a6;
+					cursor: pointer;
+					display: block;
+					padding: 0.1rem;
+					border-radius: 100%;
+				}
+
+				&>span:hover {
+					color: white;
+					background-color: #272727;
+				}
+			}
+		}
+	}
+
+	.listTasks {
+		padding-bottom: 0.5rem;
+		flex-grow: 1;
+		height: 100%;
+		overflow: hidden scroll;
+		scroll-behavior: smooth;
+		display: flex;
+		flex-direction: column;
+	}
+}

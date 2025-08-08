@@ -11,6 +11,10 @@ export default defineConfig({
                 target: 'http://localhost:3000', // your backend server
                 changeOrigin: true,
             },
+            '^/v[0-9]+/lists/': {
+                target: 'http://localhost:3000',
+                changeOrigin: true,
+            },
         },
     },
 });

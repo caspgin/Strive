@@ -1,11 +1,10 @@
 .dtContainer {
-	--start-day: 1;
-	border: none;
 	position: absolute;
 	inset: 0;
 	border-radius: 0;
 	background-color: rgba(1, 1, 1, 0.5);
 	backdrop-filter: blur(3px);
+	z-index: 4000;
 
 	* {
 		border: none;
@@ -14,86 +13,130 @@
 	}
 
 	.dt {
-		width: 100%;
 		position: absolute;
-		max-width: 300px;
-		padding: 1rem 1rem;
-		border-radius: 25px;
+		left: 50%;
+		top: 50%;
+		translate: -50% -50%;
+		max-width: 560px;
+		min-width: 280px;
+		border-radius: 1.75rem;
 		background-color: var(--DatePicker-background);
+		display: flex;
+		flex-direction: column;
 
-		&>* {
-			margin-top: 1rem;
-		}
+		.noBtnContainer {
+			padding: 1.25rem 0.375rem;
 
-		.monthPicker {
-			display: flex;
-			gap: 2px;
-			align-items: center;
-			margin-top: 0.6rem;
-			font-size: 14px;
+			.monthPicker {
+				display: flex;
+				place-content: center;
 
-			button {
-				all: unset;
-				cursor: pointer;
-				padding: 2px;
+				.row {
+					display: grid;
+					grid-template-columns: 1fr 4fr 1fr;
+					width: 100%;
+					place-content: center;
 
-				span {
-					font-size: 1rem;
-					display: block;
-				}
-			}
+					.btnContainer {
+						display: grid;
+						place-content: center;
+						padding: 0.5rem 0;
 
-			div {
-				flex-grow: 1;
-				text-align: center;
-			}
-		}
+						button {
+							all: unset;
+							cursor: pointer;
+							display: grid;
+							place-content: center;
+							padding: 0.5rem 0.5rem;
+							border-radius: 2rem;
+							position: relative;
 
-		.calendar {
-			display: flex;
-			flex-direction: column;
-			font-size: 12px;
-			padding-bottom: 1rem;
-			border-bottom: 1px solid grey;
+							&:hover {
+								background-color: #272727;
+							}
 
-			&>* {
-				display: grid;
-				column-gap: 5px;
-				grid-template-columns: repeat(7, 1fr);
-			}
+							.test {
+								scale: -1;
+								translate: -10% 0;
+							}
 
-			.weekDay {
-				grid-template-rows: 1fr;
-
-				span {
-					font-size: 12px;
-				}
-			}
-
-			.dayNumber {
-				margin-top: 1rem;
-				row-gap: 1rem;
-
-				&>div:nth-of-type(1) {
-					grid-column-start: var(--start-day);
-				}
-
-				&>div {
-					&>button {
-						all: unset;
-						width: 100%;
-						aspect-ratio: 1;
-						border-radius: 100px;
-						cursor: pointer;
-						display: block;
+							span {
+								display: block;
+								font-size: 1.25rem;
+							}
+						}
 					}
 
-					button.today {
-						background-color: var(--DatePicker-today-background);
+					.monthYearLabel {
+						display: grid;
+						place-content: center;
+						font-size: 1.35rem;
+					}
+				}
+			}
+
+			.calendar {
+				display: flex;
+				flex-direction: column;
+				padding: 0 0.5rem;
+				padding-bottom: 1rem;
+
+				border-bottom: 1px solid grey;
+
+				&>* {
+					display: grid;
+					column-gap: 5px;
+					grid-template-columns: repeat(7, 1fr);
+					place-content: center;
+				}
+
+				.weekDay {
+					div {
+						display: grid;
+						place-content: center;
+
+						span {
+							display: grid;
+							place-content: center;
+							min-width: auto;
+							height: 25px;
+							aspect-ratio: 1;
+							font-size: 0.875rem;
+							padding: 0.25rem;
+						}
+					}
+				}
+
+				.dayNumber {
+					&>div:nth-of-type(1) {
+						grid-column-start: var(--start-day);
 					}
 
-					button.active {
-						background-color: var(--DatePicker-selected-background);
+					&>div {
+						display: grid;
+						place-content: center;
+						margin-top: 0.75rem;
+
+						&>button {
+							all: unset;
+							height: 25px;
+							aspect-ratio: 1;
+							min-width: auto;
+							font-size: 0.875rem;
+							padding: 0.25rem;
+							cursor: pointer;
+							display: grid;
+							place-content: center;
+							border-radius: 2rem;
+						}
+
+						button.today {
+							background-color: var(--DatePicker-today-background);
+						}
+
+						button.active {
+							background-color: var(--DatePicker-selected-background);
+						}
 					}
 				}
 			}

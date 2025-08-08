@@ -8,10 +8,12 @@ export const AddTaskButton = ({ onEmptyTask }: AddTaskButtonProp) => {
     return (
         <div className="createContainer">
             <button onClick={() => onEmptyTask()}>
-                <div>
+                <div className="logo-container">
                     <span className="material-symbols-outlined">add_task</span>
                 </div>
-                <div>Add a task</div>
+                <div className="label">
+                    <p>Add a task</p>
+                </div>
             </button>
         </div>
     );

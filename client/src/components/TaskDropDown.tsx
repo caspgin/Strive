@@ -34,9 +34,13 @@ export const TaskDropDown = ({
     return (
         <div className="taskDropDown" onBlur={handleBlur}>
             {(isEditing || isHovered || isOpen) && (
-                <button onClick={openDropdown} className="dropdown-button">
-                    <span className="material-symbols-outlined">more_vert</span>
-                </button>
+                <div className="dropdown-button-container">
+                    <button onClick={openDropdown} className="dropdown-button">
+                        <span className="material-symbols-outlined">
+                            more_vert
+                        </span>
+                    </button>
+                </div>
             )}
             {isOpen && (
                 <div className="dropdown-menu-container">

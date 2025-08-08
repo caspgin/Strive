@@ -1,19 +1,44 @@
 .taskDropDown {
 	position: relative;
+	display: block;
 
 	/*3c4043*/
-	.dropdown-button {
-		all: unset;
-		cursor: pointer;
+	.dropdown-button-container {
+		display: block;
+
+		.dropdown-button {
+			all: unset;
+			cursor: pointer;
+			display: flex;
+			place-content: center;
+			border-radius: 2rem;
+			padding: 0.2rem;
+
+			&:hover {
+				background-color: #3f4040;
+
+				&>span {
+					color: white;
+				}
+			}
+
+			&>span {
+				display: block;
+				width: 100%;
+				aspect-ratio: 1;
+				font-size: 1.3rem;
+				color: #9aa0a6;
+			}
+		}
 	}
 
 	.dropdown-menu-container {
-		font-size: 1rem;
 		font-weight: 600;
 		position: absolute;
 		right: 0;
-		width: 12vw;
-		border-radius: 10px;
+		width: 10vw;
+		max-width: 250px;
+		border-radius: 0.5rem;
 		background-color: #36373a;
 		padding: 0.6em 0em;
 	}
@@ -28,20 +53,20 @@
 		all: unset;
 		cursor: pointer;
 		display: flex;
-		gap: 2%;
 		width: 100%;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
 		padding: 0.2rem 0;
 
 		&>span:first-child {
 			font-size: 1.3rem;
-			width: 20%;
+			margin-left: 1rem;
+			margin-right: 1rem;
 		}
 
 		&>span:last-child {
-			width: 70%;
 			text-align: left;
+			text-overflow: ellipsis;
 		}
 	}
 

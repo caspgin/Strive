@@ -28,11 +28,6 @@
 		background-color: var(--taskList-background);
 		align-items: flex-end;
 
-		/*
-		.displayTime {
-			background-color: red;
-		}
-*/
 		&>div>span {
 			font-size: 1.2rem;
 			line-height: 1rem;
@@ -44,6 +39,7 @@
 		padding: 0.2rem 0.8rem;
 		border: 1px solid var(--Date-border-color);
 		background-color: var(--taskList-background);
+		cursor: pointer;
 	}
 
 	& .displayTime {

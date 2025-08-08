@@ -1,49 +1,36 @@
+import { useEffect, useState } from 'react';
+import { ListComponent } from './components/ListComponent';
 import './css/App.css';
-import { TaskType } from './types/types.js';
-import { AddTaskButton } from './components/AddTaskComponent.tsx';
-import { v4 as uuidv4 } from 'uuid';
-import { Task } from './components/TaskComponent.tsx';
-import { useTaskManagement } from './Hooks/TaskManagementHook.tsx';
+import axios from 'axios';
+import { ListType } from './types/types';
 
 function App() {
-    const {
-        tasks,
-        loading,
-        err,
-        handleNewTask,
-        handleEmptyTask,
-        handleDelete,
-        handleUpdate,
-    } = useTaskManagement();
-    console.log(err);
+    const [lists, setLists] = useState<ListType[]>([]);
+    const [appError, setAppError] = useState<unknown>(null);
+    useEffect(() => {
+        const fetchLists = async () => {
+            try {
+                const response = await axios.get('/v2/lists/');
+                if (!response || !response.data) {
+                    setAppError(new Error('List could not be loaded!'));
+                    return;
+                }
+                const listsData: ListType[] = response.data;
+                listsData.sort((a: ListType, b: ListType) => a.id - b.id);
+                setLists(response.data);
+            } catch (error) {
+                setAppError(error);
+            }
+        };
+
+        fetchLists();
+    }, []);
+
     return (
         <div id="app">
-            <div>
-                {loading ? (
-                    <Task
-                        givenTask={{
-                            name: 'loading',
-                            uuid: uuidv4(),
-                            parentid: null,
-                        }}
-                    />
-                ) : (
-                    <div>
-                        <AddTaskButton onEmptyTask={handleEmptyTask} />
-                        {tasks.map((value: TaskType) => (
-                            <Task
-                                givenTask={value}
-                                onDelete={handleDelete}
-                                onUpdate={handleUpdate}
-                                key={value.uuid}
-                                newTask={value.id == undefined}
-                                onNewTask={handleNewTask}
-                                onEmptyTask={handleEmptyTask}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
+            {lists.map((list: ListType) => (
+                <ListComponent key={list.id} list={list} />
+            ))}
         </div>
     );
 }
