@@ -41,7 +41,6 @@ export const remove = async (request, response) => {
     try {
         const { id } = request.params;
         const result = await taskService.remove(id);
-        console.log(result);
         response.status(200).json({ deleteCount: result });
     } catch (error) {
         response.status(500).json({ err: error.message });

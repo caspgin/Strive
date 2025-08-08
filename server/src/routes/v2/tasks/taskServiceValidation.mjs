@@ -1,7 +1,7 @@
-export const idValidation = (id) => {
-    const id_num = Number(id);
+import { InvalidIdError } from '../error/customErrors.mjs';
 
-    if (!Number.isInteger(id_num)) {
-        throw new Error('Invalid id or type');
+export const idValidation = (id) => {
+    if (!id || !Number.isInteger(Number(id))) {
+        throw new InvalidIdError('Id is Invalid or not provided.');
     }
 };

@@ -6,6 +6,7 @@ export class Task {
         taskCompleted,
         taskDesc,
         taskparentId,
+        sort_order,
     ) {
         this.name = taskName || '';
         this.time = this.formatTime(taskTime);
@@ -13,6 +14,7 @@ export class Task {
         this.completed = taskCompleted || false;
         this.description = taskDesc || null;
         this.parentid = taskparentId || null;
+        this.sort_order = sort_order;
     }
 
     formatTime(taskTime) {
