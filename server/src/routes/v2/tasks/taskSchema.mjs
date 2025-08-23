@@ -1,28 +1,29 @@
 export class Task {
-    constructor(
-        taskName,
-        taskDate,
-        taskTime,
-        taskCompleted,
-        taskDesc,
-        taskparentId,
-        sort_order,
-    ) {
-        this.name = taskName || '';
-        this.time = this.formatTime(taskTime);
-        this.date = taskDate || null;
-        this.completed = taskCompleted || false;
-        this.description = taskDesc || null;
-        this.parentid = taskparentId || null;
-        this.sort_order = sort_order;
-    }
-
-    formatTime(taskTime) {
-        if (!taskTime) {
-            return null;
-        }
-        const { hours, minutes } = taskTime;
-        const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-        return timeString;
-    }
+	constructor({
+		name,
+		date,
+		time,
+		completed,
+		description,
+		parentid,
+		listid,
+		sort_order,
+	}) {
+		this.name = name || '';
+		this.time = this.formatTime(time);
+		this.date = date || null;
+		this.completed = completed || false;
+		this.description = description || null;
+		this.parentid = parentid || null;
+		this.listid = listid || 0;
+		this.sort_order = sort_order;
+	}
+	formatTime(taskTime) {
+		if (!taskTime) {
+			return null;
+		}
+		const { hours, minutes } = taskTime;
+		const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+		return timeString;
+	}
 }

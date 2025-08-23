@@ -2,124 +2,137 @@ import { useCallback, useEffect, useState } from 'react';
 import { TaskType } from '../types/types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import {
-	buildSortedTaskHeirachy,
-	normalizeTaskArray,
-} from '../utilities/TaskUtility';
+import { normalizeTaskArray } from '../utilities/TaskUtility';
 
 export const useTaskManagement = (listid: number) => {
-	const [tasks, setTasks] = useState<TaskType[]>([]);
-	const [loading, setLoading] = useState(true);
-	const [err, setErr] = useState<unknown>(null);
+    const [tasks, setTasks] = useState<TaskType[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState<unknown>(null);
 
-	//Fetch Data
-	useEffect(() => {
-		const fetchTasks = async () => {
-			try {
-				const response = await axios.get(
-					`/v2/lists/${Number(listid)}/tasks`,
-				);
-				const data: TaskType[] = normalizeTaskArray(response.data);
-				const sortedTasks: TaskType[] = buildSortedTaskHeirachy(data);
-				setTasks(() => sortedTasks);
-			} catch (error) {
-				setErr(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchTasks();
-	}, [listid]);
+    //Fetch Data
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const response = await axios.get(
+                    `/v2/lists/${Number(listid)}/tasks`,
+                );
+                const tasks: TaskType[] = normalizeTaskArray(response.data);
+                setTasks(() => tasks);
+            } catch (error) {
+                setErr(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTasks();
+    }, [listid]);
 
-	//Update a Task on Backend
-	const handleUpdate = useCallback(async (task: TaskType) => {
-		const uuid = task.uuid;
-		axios
-			.put(`/v2/tasks/${Number(task.id)}`, {
-				task,
-			})
-			.then(() => {
-				setTasks((prev) =>
-					prev.map((value) => (value.uuid === uuid ? task : value)),
-				);
-			})
-			.catch((error) => {
-				setErr(error);
-			});
-	}, []);
+    //Update a Task on Backend
+    const handleUpdate = useCallback(async (task: TaskType) => {
+        const uuid = task.uuid;
+        axios
+            .put(`/v2/tasks/${Number(task.id)}`, {
+                task,
+            })
+            .then(() => {
+                setTasks((prevTasks) =>
+                    prevTasks.map((value) =>
+                        value.uuid === uuid ? task : value,
+                    ),
+                );
+            })
+            .catch((error) => {
+                setErr(error);
+            });
+    }, []);
 
-	//Delete a Task
-	const handleDelete = useCallback(async (uuid: string, id?: number) => {
-		try {
-			//If the task exists on DB, it has id
-			if (id !== undefined) {
-				const response = await axios.delete(`/v2/tasks/${id}`);
-				if (!response || response.data?.deleteCount == 0) {
-					setErr(
-						new Error(
-							'Deletion on backend failed or there was nothing to delete.',
-						),
-					);
-					return;
-				}
-			}
-			//Update the tasks state
-			setTasks((prevTasks: TaskType[]) =>
-				prevTasks.filter(
-					(prevTask: TaskType) =>
-						prevTask.uuid !== uuid &&
-						id &&
-						prevTask.parentid !== id,
-				),
-			);
-		} catch (error) {
-			setErr(error);
-		}
-	}, []);
+    //Delete a Task
+    const handleDelete = useCallback(async (uuid: string, id?: number) => {
+        try {
+            //If the task exists on DB, it has id
+            if (id !== undefined) {
+                const response = await axios.delete(`/v2/tasks/${id}`);
+                if (!response || response.data?.deleteCount == 0) {
+                    setErr(
+                        new Error(
+                            'Deletion on backend failed or there was nothing to delete.',
+                        ),
+                    );
+                    return;
+                }
+            }
+            //Update the tasks state
+            setTasks((prevTasks: TaskType[]) =>
+                prevTasks.filter((task: TaskType) => {
+                    if (id && task.parentid == id) {
+                        return false;
+                    } else if (task.uuid === uuid) {
+                        return false;
+                    }
+                    return true;
+                }),
+            );
+        } catch (error) {
+            setErr(error);
+        }
+    }, []);
 
-	const handleNewTask = useCallback((task: TaskType) => {
-		axios
-			.post(`/v2/tasks/create`, { task })
-			.then((response) => {
-				setTasks((prevTasks) => {
-					const newTasks = prevTasks.filter(
-						(prevTask) => prevTask.uuid != task.uuid,
-					);
-					const newTask: TaskType = {
-						uuid: uuidv4(),
-						...response.data,
-					};
-					newTasks.push(newTask);
-					return buildSortedTaskHeirachy(newTasks);
-				});
-			})
-			.catch((error) => {
-				setErr(error);
-			});
-	}, []);
+    const handleNewTask = useCallback((task: TaskType) => {
+        axios
+            .post(`/v2/tasks/create`, { task })
+            .then((response) => {
+                setTasks((prevTasks) => {
+                    const filteredTasks = prevTasks.filter(
+                        (prevTask) => prevTask.uuid != task.uuid,
+                    );
+                    const newTask: TaskType = {
+                        uuid: uuidv4(),
+                        ...response.data,
+                    };
+                    return [...filteredTasks, newTask];
+                });
+            })
+            .catch((error) => {
+                setErr(error);
+            });
+    }, []);
 
-	const handleEmptyTask = useCallback(
-		(id?: number) => {
-			const task: TaskType = {
-				uuid: uuidv4(),
-				name: '',
-				parentid: id ? id : null,
-				listid: listid,
-			};
-			setTasks((prevTasks) =>
-				buildSortedTaskHeirachy([task, ...prevTasks]),
-			);
-		},
-		[listid],
-	);
+    const getMaxSortOrder = useCallback(
+        (id?: number) => {
+            const maxSortOrder: number = Math.max(
+                ...(id
+                    ? tasks
+                          .filter((task) => task.parentid == id)
+                          .map((task) => task.sort_order)
+                    : tasks.map((task) => task.sort_order)),
+            );
 
-	return {
-		tasks,
-		loading,
-		err,
-		handleNewTask,
-		handleEmptyTask,
-		handleUpdate,
-		handleDelete,
-	};
+            return maxSortOrder < 0 ? 100 : maxSortOrder + 100;
+        },
+        [tasks],
+    );
+
+    const handleEmptyTask = useCallback(
+        (id?: number) => {
+            const task: TaskType = {
+                uuid: uuidv4(),
+                name: '',
+                parentid: id ? id : null,
+                listid: listid,
+                sort_order: getMaxSortOrder(id),
+            };
+            setTasks((prevTasks) => [task, ...prevTasks]);
+        },
+        [listid, getMaxSortOrder],
+    );
+
+    return {
+        tasks,
+        loading,
+        err,
+        handleNewTask,
+        handleEmptyTask,
+        handleUpdate,
+        handleDelete,
+    };
 };

@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTaskManagement } from '../Hooks/TaskManagementHook';
-import { ListType, TaskType } from '../types/types';
+import { ListType, SortBy, TaskType } from '../types/types';
 import { AddTaskButton } from './AddTaskComponent';
 import { Task } from './TaskComponent';
 import { cloneDeep } from 'lodash';
 import '../css/list.css';
+import { buildSortedTaskHeirachy } from '../utilities/TaskUtility';
 interface ListComponentProp {
     list: ListType;
 }
 
 export const ListComponent = ({ list }: ListComponentProp) => {
+    const [sortby] = useState<SortBy>(SortBy.UserOrder);
     const [mList] = useState<ListType>(() => cloneDeep(list) || null);
     const {
         tasks,
@@ -19,6 +21,11 @@ export const ListComponent = ({ list }: ListComponentProp) => {
         handleDelete,
         handleUpdate,
     } = useTaskManagement(list.id);
+
+    const sortedTasks = useMemo(() => {
+        return buildSortedTaskHeirachy(tasks, sortby);
+    }, [tasks, sortby]);
+
     return (
         <div className="listComponent">
             {loading ? null : (
@@ -35,7 +42,7 @@ export const ListComponent = ({ list }: ListComponentProp) => {
                         <AddTaskButton onEmptyTask={handleEmptyTask} />
                     </div>
                     <div className="listTasks">
-                        {tasks.map((value: TaskType) => (
+                        {sortedTasks.map((value: TaskType) => (
                             <Task
                                 givenTask={value}
                                 onDelete={handleDelete}
