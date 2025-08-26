@@ -45,7 +45,7 @@
 
 			.listSetting {
 				margin-top: 0.5rem;
-				padding: 0.25rem 0.5rem;
+				padding: 0.25rem 1rem;
 				display: grid;
 				place-content: center;
 
@@ -55,6 +55,7 @@
 					display: block;
 					padding: 0.1rem;
 					border-radius: 100%;
+					font-size: 1.25rem;
 				}
 
 				&>span:hover {

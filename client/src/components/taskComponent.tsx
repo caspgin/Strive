@@ -28,7 +28,7 @@ export const Task = ({
 }: TaskProps) => {
     const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
     const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
-    const [isHovered, setIsHovered] = useState<boolean>(true);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
     const [task, setTask] = useState<TaskType>(() =>
         cloneDeep(givenTask || {}),
     );
