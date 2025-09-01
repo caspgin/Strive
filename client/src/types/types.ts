@@ -19,6 +19,8 @@ export interface Time {
 export interface ListType {
     id: number;
     name: string;
+    numoftasks: number;
+    render: boolean;
 }
 
 export interface RawTaskType {

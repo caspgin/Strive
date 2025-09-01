@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import '../css/task.css';
 import { TaskType } from '../types/types';
 import { TaskIcon } from './TaskIcon';
@@ -26,6 +26,7 @@ export const Task = ({
     onNewTask,
     onEmptyTask,
 }: TaskProps) => {
+    //console.log(`task updated id:${givenTask.id}`);
     const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
     const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
     const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -52,6 +53,7 @@ export const Task = ({
     }
 
     function handleFocus() {
+        console.log('parentCalled');
         if (!isEditing) {
             setIsEditing(true);
         }
@@ -71,6 +73,15 @@ export const Task = ({
         onEmptyTask(task.id);
     }
 
+    const handleCompletion = useCallback(() => {
+        setTask((prevTask) => ({
+            ...prevTask,
+            completed: !prevTask.completed,
+        }));
+        onUpdate(task);
+        console.log('done');
+    }, [task, onUpdate]);
+
     return (
         <div
             className={`tasks ${isSubTask && 'subTask'} `}
@@ -80,7 +91,13 @@ export const Task = ({
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className="taskContainer">
-                <TaskIcon {...{ task, setTask }} />
+                <TaskIcon
+                    {...{
+                        id: task.id,
+                        completed: task.completed || false,
+                        handleCompletion,
+                    }}
+                />
                 <div className="taskData">
                     <TaskName
                         {...{

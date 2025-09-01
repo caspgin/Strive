@@ -3,7 +3,6 @@
 	border-radius: 1rem;
 	min-width: 300px;
 	max-width: 300px;
-	overflow: clip;
 	max-height: 100%;
 	position: relative;
 
@@ -17,62 +16,50 @@
 		overflow: inherit;
 		max-height: 100%;
 	}
+}
 
-	.listHeader {
-		position: sticky;
-		z-index: 3000;
-		top: 0;
-		cursor: grab;
+.listHeader {
+	position: sticky;
+	top: 0;
+	cursor: grab;
+	padding-bottom: 8px;
 
-		.title {
-			display: flex;
+	.title {
+		display: flex;
 
-			.listTitle {
-				margin-left: 1rem;
-				margin-top: 0.5rem;
-				padding: 0.5rem 0;
-				color: var(--tasks-on-background);
-				font-size: 1.3rem;
-				font-weight: 400;
-				line-height: 1.5rem;
-				letter-spacing: 0;
-				text-align: left;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				flex: 1 1;
-			}
+		.listTitle {
+			margin-left: 1rem;
+			margin-top: 0.5rem;
+			padding: 0.5rem 0;
+			color: var(--tasks-on-background);
+			font-size: 1.3rem;
+			font-weight: 400;
+			line-height: 1.5rem;
+			letter-spacing: 0;
+			text-align: left;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			flex: 1 1;
+		}
 
+		.listDropDown {
 			.listSetting {
 				margin-top: 0.5rem;
 				padding: 0.25rem 1rem;
 				display: grid;
 				place-content: center;
-
-				&>span {
-					color: #9aa0a6;
-					cursor: pointer;
-					display: block;
-					padding: 0.1rem;
-					border-radius: 100%;
-					font-size: 1.25rem;
-				}
-
-				&>span:hover {
-					color: white;
-					background-color: #272727;
-				}
 			}
 		}
 	}
+}
 
-	.listTasks {
-		padding-bottom: 0.5rem;
-		flex-grow: 1;
-		height: 100%;
-		overflow: hidden scroll;
-		scroll-behavior: smooth;
-		display: flex;
-		flex-direction: column;
-	}
+.listTasks {
+	padding-bottom: 0.5rem;
+	flex-grow: 1;
+	height: 100%;
+	overflow: hidden scroll;
+	scroll-behavior: smooth;
+	display: flex;
+	flex-direction: column;
 }

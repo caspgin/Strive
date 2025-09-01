@@ -1,12 +1,24 @@
 import { useState } from 'react';
-import '../css/taskDropDown.css';
 import { DropDownItem } from './DropDownItem';
+import { SortBy } from '../types/types';
+import '../css/listDropDown.css';
 
-interface ListDropDownProp {}
+interface ListDropDownProp {
+    sortby: SortBy;
+    setSortBy: React.Dispatch<React.SetStateAction<SortBy>>;
+    listid: number;
+    handleDeleteList: () => void;
+    handleRenameList: () => void;
+}
 
-export const ListDropDown = ({}: ListDropDownProp) => {
-    const [isOpen, setIsOpen] = useState(() => false);
-    const [sortType, setSortType] = useState(0);
+export const ListDropDown = ({
+    sortby,
+    setSortBy,
+    listid,
+    handleDeleteList,
+    handleRenameList,
+}: ListDropDownProp) => {
+    const [isOpen, setIsOpen] = useState(false);
     const openDropdown = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.stopPropagation();
         setIsOpen(true);
@@ -18,16 +30,11 @@ export const ListDropDown = ({}: ListDropDownProp) => {
         }
         setIsOpen(false);
     };
-    function handleClick() {
-        console.log('click');
-    }
 
-    function handleRename() {}
-    function handleDelete() {}
     return (
-        <div className="taskDropDown" onBlur={handleBlur}>
+        <div className="listDropDown" onBlur={handleBlur}>
             {
-                <div className="listSetting">
+                <div className="dropdown-button-container listSetting">
                     <button onClick={openDropdown} className="dropdown-button">
                         <span className="material-symbols-outlined">
                             more_vert
@@ -38,37 +45,59 @@ export const ListDropDown = ({}: ListDropDownProp) => {
             {isOpen && (
                 <div className="dropdown-menu-container">
                     <div className="dropdown-menu">
-                        <DropDownItem
-                            {...{
-                                title: 'My order',
-                                icon_name: 'check',
-                                handleClick,
-                            }}
-                        />
-                        <DropDownItem
-                            {...{
-                                title: 'Date',
-                                icon_name: 'check',
-                                handleClick,
-                            }}
-                        />
-                        <DropDownItem
-                            {...{
-                                title: 'Title',
-                                icon_name: 'check',
-                                handleClick,
-                            }}
-                        />
+                        <div className="sortByMenu">
+                            <div className="dropdown-label">Sort by</div>
+                            <div>
+                                <DropDownItem
+                                    {...{
+                                        title: 'My order',
+                                        icon_name:
+                                            sortby == SortBy.UserOrder
+                                                ? 'check'
+                                                : '',
+                                        handleClick: () => {
+                                            setSortBy(SortBy.UserOrder);
+                                        },
+                                    }}
+                                />
+                                <DropDownItem
+                                    {...{
+                                        title: 'Date',
+                                        icon_name:
+                                            sortby == SortBy.Date
+                                                ? 'check'
+                                                : '',
+                                        handleClick: () => {
+                                            setSortBy(SortBy.Date);
+                                        },
+                                    }}
+                                />
+                                <DropDownItem
+                                    {...{
+                                        title: 'Title',
+                                        icon_name:
+                                            sortby == SortBy.Alphabetically
+                                                ? 'check'
+                                                : '',
+                                        handleClick: () => {
+                                            setSortBy(SortBy.Alphabetically);
+                                        },
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <hr className="line" />
                         <DropDownItem
                             {...{
                                 title: 'Rename List',
-                                handleClick: handleRename,
+                                handleClick: handleRenameList,
                             }}
                         />
                         <DropDownItem
                             {...{
                                 title: 'Delete List',
-                                handleClick: handleDelete,
+                                handleClick: handleDeleteList,
+                                disabled: listid == 0 ? true : false,
                             }}
                         />
                     </div>

@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { TaskType } from '../types/types';
+import { ListType, TaskType } from '../types/types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { normalizeTaskArray } from '../utilities/TaskUtility';
 
-export const useTaskManagement = (listid: number) => {
+export const useTaskManagement = (
+    listid: number,
+    setLists: React.Dispatch<React.SetStateAction<ListType[]>>,
+) => {
     const [tasks, setTasks] = useState<TaskType[]>([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState<unknown>(null);
@@ -77,25 +80,39 @@ export const useTaskManagement = (listid: number) => {
         }
     }, []);
 
-    const handleNewTask = useCallback((task: TaskType) => {
-        axios
-            .post(`/v2/tasks/create`, { task })
-            .then((response) => {
-                setTasks((prevTasks) => {
-                    const filteredTasks = prevTasks.filter(
-                        (prevTask) => prevTask.uuid != task.uuid,
+    const handleNewTask = useCallback(
+        (task: TaskType) => {
+            axios
+                .post(`/v2/tasks/create`, { task })
+                .then((response) => {
+                    setTasks((prevTasks) => {
+                        const filteredTasks = prevTasks.filter(
+                            (prevTask) => prevTask.uuid != task.uuid,
+                        );
+                        const newTask: TaskType = {
+                            uuid: uuidv4(),
+                            ...response.data,
+                        };
+                        return [...filteredTasks, newTask];
+                    });
+
+                    setLists((prevLists) =>
+                        prevLists.map((list) =>
+                            listid != list.id
+                                ? list
+                                : {
+                                      ...list,
+                                      numoftasks: Number(list.numoftasks) + 1,
+                                  },
+                        ),
                     );
-                    const newTask: TaskType = {
-                        uuid: uuidv4(),
-                        ...response.data,
-                    };
-                    return [...filteredTasks, newTask];
+                })
+                .catch((error) => {
+                    setErr(error);
                 });
-            })
-            .catch((error) => {
-                setErr(error);
-            });
-    }, []);
+        },
+        [listid, setLists],
+    );
 
     const getMaxSortOrder = useCallback(
         (id?: number) => {

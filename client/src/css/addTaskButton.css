@@ -21,10 +21,12 @@
 		}
 
 		&>.logo-container {
+			margin-right: 1rem;
+			padding: 4px;
+
 			&>span {
 				display: block;
 				color: var(--addTask-color);
-				margin-right: 1rem;
 				font-size: 1.25rem;
 			}
 		}

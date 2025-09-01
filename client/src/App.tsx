@@ -1,36 +1,64 @@
-import { useEffect, useState } from 'react';
 import { ListComponent } from './components/ListComponent';
-import './css/App.css';
-import axios from 'axios';
 import { ListType } from './types/types';
+import { useListManagement } from './Hooks/ListManagementHook';
+import { ListName } from './components/ListName';
+import { useState } from 'react';
+import { SideBar } from './components/SideBar';
+import './css/App.css';
 
 function App() {
-    const [lists, setLists] = useState<ListType[]>([]);
-    const [appError, setAppError] = useState<unknown>(null);
-    useEffect(() => {
-        const fetchLists = async () => {
-            try {
-                const response = await axios.get('/v2/lists/');
-                if (!response || !response.data) {
-                    setAppError(new Error('List could not be loaded!'));
-                    return;
-                }
-                const listsData: ListType[] = response.data;
-                listsData.sort((a: ListType, b: ListType) => a.id - b.id);
-                setLists(response.data);
-            } catch (error) {
-                setAppError(error);
-            }
-        };
+    console.log('app rendered');
+    const { lists, setLists, deleteList, createNewList, updateList, err } =
+        useListManagement();
+    const [showNameBox, setShowNameBox] = useState<boolean>(false);
+    const [listInfo, setListInfo] = useState<ListType | null>(null);
+    function updateListName(name: string) {
+        if (listInfo && listInfo.id) {
+            updateList({ ...listInfo, name: name });
+        }
 
-        fetchLists();
-    }, []);
+        if (listInfo === null) {
+            createNewList(name);
+        }
+    }
 
     return (
         <div id="app">
-            {lists.map((list: ListType) => (
-                <ListComponent key={list.id} list={list} />
-            ))}
+            <section className="sideBarSection">
+                <SideBar
+                    {...{
+                        lists,
+                        setShowNameBox,
+                        setListInfo,
+                        setLists,
+                    }}
+                />
+            </section>
+            <section className="listAreaSection">
+                <div className="listAreaContainer">
+                    {lists.map((list: ListType) => (
+                        <ListComponent
+                            key={list.id}
+                            {...{
+                                list,
+                                deleteList,
+                                setShowNameBox,
+                                setListInfo,
+                                setLists,
+                            }}
+                        />
+                    ))}
+                </div>
+            </section>
+            {showNameBox && (
+                <div className="dialogBoxContainer">
+                    <ListName
+                        name={listInfo ? listInfo.name : ''}
+                        setShowNameBox={setShowNameBox}
+                        updateListName={updateListName}
+                    />
+                </div>
+            )}
         </div>
     );
 }

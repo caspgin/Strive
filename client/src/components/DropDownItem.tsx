@@ -2,7 +2,7 @@ export interface DropDownItemProps {
     title: string;
     icon_name?: string;
     disabled?: boolean;
-    handleClick: () => void;
+    handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const DropDownItem = ({
@@ -11,19 +11,24 @@ export const DropDownItem = ({
     disabled,
     handleClick,
 }: DropDownItemProps) => {
-    const btnClass = disabled ? 'unclickable' : '';
+    const btnClass = disabled ? 'disabled' : '';
     return (
         <div className="dropdown-item-container">
             <button
-                onClick={() => handleClick()}
+                disabled={disabled}
+                onClick={handleClick}
                 className={`dropdown-item ${btnClass}`}
             >
-                {icon_name && (
-                    <span className="dropdown-item-icon material-symbols-outlined">
-                        {icon_name}
-                    </span>
-                )}
-                <span className="dropdown-item-title">{title}</span>
+                <div className="dropdown-item-title">
+                    <span>{title}</span>
+                    {icon_name && (
+                        <div className="dropdown-item-icon">
+                            <span className="material-symbols-outlined">
+                                {icon_name}
+                            </span>
+                        </div>
+                    )}
+                </div>
             </button>
         </div>
     );

@@ -2,7 +2,7 @@
 	text-align: start;
 	width: 100%;
 	line-height: 1.25rem;
-	font-size: 1.2rem;
+	font-size: 1rem;
 	min-height: 30px;
 
 	&>div.complete {
@@ -18,19 +18,18 @@
 		min-height: inherit;
 		overflow-wrap: anywhere;
 		align-self: center;
+		display: flex;
+		align-items: center;
 
 		&>textarea {
 			all: unset;
-			min-height: inherit;
 			display: block;
 			width: 100%;
 		}
 
 		&>span {
-			min-height: inherit;
 			display: block;
 			cursor: default;
-			height: 100%;
 		}
 	}
 }

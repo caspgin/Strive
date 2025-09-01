@@ -1,0 +1,75 @@
+.listNameContainer {
+	max-width: 400px;
+	min-width: 280px;
+	background-color: #282a2c;
+	display: flex;
+	flex-direction: column;
+	border-radius: 1.8rem;
+	overflow: clip;
+}
+
+.header {
+	padding: 24px 24px 16px 24px;
+	margin: 0;
+	line-height: 1.5rem;
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+.inputContainer {
+	padding: 0 24px 24px 24px;
+
+	.inputVisibleArea {
+		padding: 0 16px;
+		border-radius: 4px;
+		min-height: 40px;
+		background-color: #414345;
+		display: flex;
+		align-items: center;
+
+		&:focus-within {
+			border-bottom: 3px solid #a8c7fa;
+		}
+	}
+
+	.input {
+		width: 100%;
+		display: flex;
+		align-items: center;
+
+		input {
+			all: unset;
+			font-size: 0.875rem;
+			font-weight: 400;
+			width: 100%;
+			height: 24px;
+		}
+	}
+}
+
+.btnsContainer {
+	padding: 0 24px 20px 24px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+	min-height: 52px;
+	gap: 0.5rem;
+
+	button {
+		all: unset;
+		padding: 0 12px;
+		margin: 4px 0;
+		block-size: 40px;
+		display: flex;
+		align-items: center;
+		font-size: 1rem;
+		line-height: 1.5rem;
+		cursor: pointer;
+		color: #a8c7fa;
+
+		span {
+			pointer-events: none;
+		}
+	}
+}

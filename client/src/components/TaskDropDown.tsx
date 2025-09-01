@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import '../css/taskDropDown.css';
-import { TaskDelete } from './TaskDelete';
+import { DropDownItem } from './DropDownItem';
 
 interface TaskDropDownProp {
     isEditing: boolean;
@@ -45,21 +45,27 @@ export const TaskDropDown = ({
             {isOpen && (
                 <div className="dropdown-menu-container">
                     <div className="dropdown-menu">
-                        {!isSubTask && (
-                            <button
-                                onClick={(event) => {
+                        <DropDownItem
+                            {...{
+                                title: 'Add Subtask',
+                                icon_name: 'subdirectory_arrow_right',
+                                disabled: isSubTask,
+                                handleClick: (event) => {
                                     event.stopPropagation();
                                     handleOnEmptyTask();
-                                }}
-                                className="dropdown-item"
-                            >
-                                <span className="material-symbols-outlined">
-                                    subdirectory_arrow_right
-                                </span>
-                                <span>Add Subtask</span>
-                            </button>
-                        )}
-                        <TaskDelete {...{ handleOnDelete }} />
+                                },
+                            }}
+                        />
+                        <DropDownItem
+                            {...{
+                                title: 'Delete',
+                                icon_name: 'delete',
+                                handleClick: (event) => {
+                                    event.stopPropagation();
+                                    handleOnDelete();
+                                },
+                            }}
+                        />
                     </div>
                 </div>
             )}

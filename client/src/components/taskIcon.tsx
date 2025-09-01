@@ -1,32 +1,38 @@
-import { useState } from 'react';
-import { TaskType } from '../types/types';
+import React, { useState } from 'react';
 
 export interface TaskIconProp {
-    task: TaskType;
-    setTask: React.Dispatch<React.SetStateAction<TaskType>>;
+    id?: number;
+    completed: boolean;
+    handleCompletion: () => void;
 }
 
-export function TaskIcon({ task, setTask }: TaskIconProp) {
-    const [hovered, setHovered] = useState<boolean>(false);
-
-    return (
-        <div className="taskIcon">
-            <button
-                className="completionButton"
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                onClick={() =>
-                    setTask((prev) => ({ ...prev, completed: !prev.completed }))
-                }
-            >
-                {task.completed ? (
-                    <span className="material-symbols-outlined">check</span>
-                ) : (
-                    <span className="material-symbols-outlined">
-                        {hovered ? 'check' : 'radio_button_unchecked'}
-                    </span>
-                )}
-            </button>
-        </div>
-    );
-}
+export const TaskIcon = React.memo(
+    ({ id, completed, handleCompletion }: TaskIconProp) => {
+        const [hovered, setHovered] = useState<boolean>(false);
+        //console.log(`taskIcon called for task:${id}`);
+        return (
+            <div className="taskIcon">
+                <button
+                    className="completionButton"
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                    onClick={(event) => {
+                        console.log('clicked');
+                        event.stopPropagation();
+                        handleCompletion();
+                    }}
+                >
+                    {completed ? (
+                        <span className="material-symbols-outlined completed">
+                            check
+                        </span>
+                    ) : (
+                        <span className="material-symbols-outlined">
+                            {hovered ? 'check' : 'radio_button_unchecked'}
+                        </span>
+                    )}
+                </button>
+            </div>
+        );
+    },
+);
