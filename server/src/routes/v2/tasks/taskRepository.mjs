@@ -4,8 +4,9 @@ import { client } from '../../../db.mjs';
 
 export const createTask = async (task) => {
     const columns = Object.keys(task);
+    const positionalParams = columns.map((_, index) => `$${index + 1}`);
 
-    const query = `INSERT INTO ${client.schema}.${client.taskTable} (${columns.join()}) VALUES (${columns.map((_, index) => `$${index + 1}`).join()}) RETURNING * `;
+    const query = `INSERT INTO ${client.schema}.${client.taskTable} (${columns.join()}) VALUES (${positionalParams.join()}) RETURNING * `;
 
     const values = columns.map((column) => {
         return task[column];
