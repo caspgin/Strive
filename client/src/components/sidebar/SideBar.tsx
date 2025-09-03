@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ListType } from '../types/types';
+import { ListType } from '../../types/types';
 import { SideBarListItem } from './sideBarListItem';
-import '../css/sideBar.css';
+import '../../css/sideBar.css';
 
 interface SideBarProp {
     lists: ListType[];

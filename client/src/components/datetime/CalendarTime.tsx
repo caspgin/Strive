@@ -2,10 +2,10 @@ import {
     getTimeObj,
     halfHourTimeIntervalList,
     timeDisplay,
-} from '../utilities/DatePickerUtility';
-import { DropDownOption, Dropdown } from './FormDropDown';
-import { Time } from '../types/types';
-import '../css/startTime.css';
+} from '../../utilities';
+import { DropDownOption, Dropdown } from '../DropDown';
+import { Time } from '../../types/types';
+import '../../css/startTime.css';
 const timeOption: Array<DropDownOption> = halfHourTimeIntervalList.map(
     (val) => {
         const obj: DropDownOption = {

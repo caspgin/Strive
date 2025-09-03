@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import '../css/listName.css';
+import '../../css/listName.css';
 
 interface ListNameProp {
     name: string;

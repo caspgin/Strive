@@ -1,4 +1,4 @@
-import { monthsName } from '../utilities/DatePickerUtility';
+import { monthsName } from '../../utilities';
 
 interface MonthNavigationProps {
     viewDate: Date;

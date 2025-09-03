@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ListType } from '../types/types';
+import { ListType } from '../../types/types';
 
 interface SideBarListItemProp {
     listid: number;

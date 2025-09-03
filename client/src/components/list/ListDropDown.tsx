@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { DropDownItem } from './DropDownItem';
-import { SortBy } from '../types/types';
-import '../css/listDropDown.css';
+import { DropDownItem } from '../../components';
+import { SortBy } from '../../types/types';
+import '../../css/listDropDown.css';
 
 interface ListDropDownProp {
     sortby: SortBy;

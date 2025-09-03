@@ -13,7 +13,7 @@ export const createTask = async (task) => {
     });
 
     const result = await client.query(query, values);
-    return result.rows;
+    return result.rows[0];
 };
 
 export const updateTask = async (id, task) => {
@@ -27,7 +27,7 @@ export const updateTask = async (id, task) => {
     values.push(id);
     const result = await client.query(query, values);
 
-    return result.rows;
+    return result.rows[0];
 };
 
 export const getAllTasks = async () => {
@@ -38,17 +38,20 @@ export const getAllTasks = async () => {
 };
 
 export const deleteTask = async (id) => {
-    const query = `DELETE FROM ${client.schema}.${client.taskTable} WHERE id = $1`;
+    const query = `DELETE FROM ${client.schema}.${client.taskTable} WHERE id = $1 RETURNING *`;
 
     const values = [id];
 
     const result = await client.query(query, values);
-    return result.rowCount;
+    return {
+        rowCount: result.rowCount,
+        listid: result.rows[0].listid,
+    };
 };
 
 export const getTaskById = async (id) => {
     const query = `SELECT * FROM ${client.schema}.${client.taskTable} WHERE id = $1`;
     const result = await client.query(query, [id]);
 
-    return result.rows;
+    return result.rows[0];
 };

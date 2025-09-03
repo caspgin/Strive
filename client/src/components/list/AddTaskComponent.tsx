@@ -1,4 +1,4 @@
-import './../css/addTaskButton.css';
+import '../../css/addTaskButton.css';
 
 export interface AddTaskButtonProp {
     onEmptyTask: (id?: number) => void;

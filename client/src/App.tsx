@@ -1,9 +1,7 @@
-import { ListComponent } from './components/ListComponent';
+import { ListComponent, ListName, SideBar } from './components';
 import { ListType } from './types/types';
 import { useListManagement } from './Hooks/ListManagementHook';
-import { ListName } from './components/ListName';
 import { useState } from 'react';
-import { SideBar } from './components/SideBar';
 import './css/App.css';
 
 function App() {

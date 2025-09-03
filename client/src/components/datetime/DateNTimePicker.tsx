@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import './../css/dt.css';
-import { CalendarGrid } from './CalendarGrid';
-import { MonthNavigation } from './MonthNavigation';
-import { ConfirmationBtns } from './ConfirmationBtns';
-import { StartTime } from './CalendarTime';
-import { TaskType, Time } from '../types/types';
+import '../../css/dt.css';
+import {
+    CalendarGrid,
+    MonthNavigation,
+    StartTime,
+    ConfirmationBtns,
+} from '../../components';
+import { TaskType, Time } from '../../types/types';
 
 interface DateNTimePickerProp {
     date: Date | null;

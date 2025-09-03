@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import '../css/taskDropDown.css';
-import { DropDownItem } from './DropDownItem';
+import '../../css/taskDropDown.css';
+import { DropDownItem } from '../../components';
 
 interface TaskDropDownProp {
     isEditing: boolean;

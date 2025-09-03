@@ -21,3 +21,11 @@ export class InvalidIdError extends Error {
         this.statusCode = 422;
     }
 }
+
+export class InvalidName extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'InvalidNameError';
+        this.statusCode = 422;
+    }
+}

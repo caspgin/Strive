@@ -10,7 +10,9 @@ import {
 
 //create
 export const create = async (taskData) => {
+    //create Task object with proper data and keys
     const task = new Task(taskData);
+    //if task is subTask check parentTask exists and valid
     if (task.parentid != null) {
         const parentTask = await getTaskById(task.parentid);
         if (!parentTask) {
@@ -18,6 +20,7 @@ export const create = async (taskData) => {
                 'Invalid parent task. Task creation Failed',
             );
         }
+        //Only 1 level of subTasks i.e. a subtask cannot have subTasks yet
         if (parentTask.parentid != null) {
             throw new ParentIsSubError('Parent task cannot be a sub task');
         }
@@ -28,11 +31,8 @@ export const create = async (taskData) => {
 
 //update
 
-export const update = async (taskData) => {
-    const { id, name, date, time, completed, description } = taskData;
-
-    const task = new Task(name, date, time, completed, description);
-
+export const update = async (id, taskData) => {
+    const task = new Task(taskData);
     const result = await taskRepository.updateTask(id, task);
     return result;
 };

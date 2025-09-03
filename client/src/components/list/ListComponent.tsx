@@ -1,12 +1,10 @@
 import { useMemo, useState } from 'react';
-import { useTaskManagement } from '../Hooks/TaskManagementHook';
-import { ListType, SortBy, TaskType } from '../types/types';
-import { AddTaskButton } from './AddTaskComponent';
-import { Task } from './TaskComponent';
+import { useTaskManagement } from '../../Hooks/TaskManagementHook';
+import { ListType, SortBy, TaskType } from '../../types/types';
+import { AddTaskButton, Task, ListDropDown } from '../../components';
 import { cloneDeep } from 'lodash';
-import { buildSortedTaskHeirachy } from '../utilities/TaskUtility';
-import { ListDropDown } from './ListDropDown';
-import '../css/list.css';
+import { buildSortedTaskHeirachy } from '../../utilities';
+import '../../css/list.css';
 
 interface ListComponentProp {
     list: ListType;

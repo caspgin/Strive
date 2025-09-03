@@ -27,7 +27,7 @@ export const useListManagement = () => {
 
     const createNewList = useCallback((name: string) => {
         axios
-            .post('/v2/lists/create', { name })
+            .post('/v2/lists/', { name })
             .then((response) => {
                 if (!response.data.id) {
                     setErr(new Error('List not created!'));

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { getDaysInMonth, isDateEqual } from '../utilities/DatePickerUtility';
+import { getDaysInMonth, isDateEqual } from '../../utilities';
 import { DateButton } from './DateButton';
 
 interface CalendarGridProps {

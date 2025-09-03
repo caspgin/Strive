@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { TaskType, Time } from '../types/types';
-import './../css/taskTime.css';
-import { DateNTimePicker } from './DateNTimePicker';
-import { DateTimeDisplay } from './DateTimeDisplay';
+import { TaskType, Time } from '../../types/types';
+import '../../css/taskTime.css';
+import { DateNTimePicker, DateTimeDisplay } from '../../components';
 
 export interface TaskTimeProp {
     task: TaskType;

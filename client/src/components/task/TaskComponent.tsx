@@ -1,13 +1,14 @@
 import { useState, useRef, useCallback } from 'react';
-import '../css/task.css';
-import { TaskType } from '../types/types';
-import { TaskIcon } from './TaskIcon';
-import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
-import { TaskName } from './TaskName';
-import { TaskTime } from './TaskTime';
-import { TaskDesc } from './TaskDesc';
-import { TaskDropDown } from './TaskDropDown';
+import { isEqual, cloneDeep } from 'lodash';
+import { TaskType } from '../../types/types';
+import {
+    TaskName,
+    TaskTime,
+    TaskDesc,
+    TaskDropDown,
+    TaskIcon,
+} from '../../components';
+import '../../css/task.css';
 
 export interface TaskProps {
     givenTask: TaskType;
@@ -26,7 +27,7 @@ export const Task = ({
     onNewTask,
     onEmptyTask,
 }: TaskProps) => {
-    //console.log(`task updated id:${givenTask.id}`);
+    console.log(`task updated id:${givenTask.id}`);
     const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
     const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
     const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -53,7 +54,6 @@ export const Task = ({
     }
 
     function handleFocus() {
-        console.log('parentCalled');
         if (!isEditing) {
             setIsEditing(true);
         }
@@ -74,12 +74,9 @@ export const Task = ({
     }
 
     const handleCompletion = useCallback(() => {
-        setTask((prevTask) => ({
-            ...prevTask,
-            completed: !prevTask.completed,
-        }));
-        onUpdate(task);
-        console.log('done');
+        const updateTask: TaskType = { ...task, completed: !task.completed };
+        onUpdate(updateTask);
+        setTask(updateTask);
     }, [task, onUpdate]);
 
     return (
@@ -102,12 +99,23 @@ export const Task = ({
                     <TaskName
                         {...{
                             isEditing,
-                            task,
+                            taskName: task.name,
+                            taskCompleted: task.completed
+                                ? task.completed
+                                : false,
                             setTask,
                         }}
                     />
                     {!isEditing && !task.description ? null : (
-                        <TaskDesc {...{ isEditing, task, setTask }} />
+                        <TaskDesc
+                            {...{
+                                isEditing,
+                                taskDesc: task.description
+                                    ? task.description
+                                    : '',
+                                setTask,
+                            }}
+                        />
                     )}
                     {!isEditing && !task.date ? null : (
                         <TaskTime {...{ task, isEditing, setTask }} />
