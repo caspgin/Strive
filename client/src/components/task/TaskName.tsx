@@ -11,7 +11,7 @@ export interface TaskNameProp {
 
 export const TaskName = memo(
     ({ taskName, taskCompleted, isEditing, setTask }: TaskNameProp) => {
-        console.log(`TaskName of task : ${taskName} is rendered`);
+        //console.log(`TaskName of task : ${taskName} is rendered`);
         const textAreaRef = useRef<HTMLTextAreaElement>(null);
         const [name, setName] = useState<string>(() => taskName || '');
 

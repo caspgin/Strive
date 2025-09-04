@@ -31,7 +31,7 @@ export class Task {
 export class List {
     constructor({ name, render, numoftasks }) {
         this.name = name;
-        this.render = render || true;
+        this.render = render == undefined || render == null ? true : render;
         this.numoftasks = numoftasks || 0;
     }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ListType } from '../../types/types';
 import { SideBarListItem } from './sideBarListItem';
 import '../../css/sideBar.css';
@@ -7,22 +7,34 @@ interface SideBarProp {
     lists: ListType[];
     setShowNameBox: React.Dispatch<React.SetStateAction<boolean>>;
     setListInfo: React.Dispatch<React.SetStateAction<ListType | null>>;
-    setLists: React.Dispatch<React.SetStateAction<ListType[]>>;
+    updateList: (list: ListType) => void;
 }
 
 export const SideBar = ({
     lists,
     setShowNameBox,
     setListInfo,
-    setLists,
+    updateList,
 }: SideBarProp) => {
-    console.log('sideBar rendered');
+    //console.log('sideBar rendered');
     const [showListData, setShowListData] = useState<boolean>(true);
 
     function handleCreateList() {
         setListInfo(null);
         setShowNameBox(true);
     }
+
+    const handleListRender = useCallback(
+        (id: number) => {
+            const foundList: ListType | undefined = lists.find(
+                (list) => list.id == id,
+            );
+            if (foundList) {
+                updateList({ ...foundList, render: !foundList.render });
+            }
+        },
+        [lists, updateList],
+    );
 
     return (
         <div className="sideBarContainer">
@@ -52,25 +64,29 @@ export const SideBar = ({
                                 </button>
                             </div>
                         </div>
-                        {showListData && (
-                            <div className="listNamesContainer">
-                                <div className="listNames">
-                                    <ul>
-                                        {lists.map((list) => (
-                                            <SideBarListItem
-                                                key={list.id}
-                                                {...{
-                                                    listid: list.id,
-                                                    listName: list.name,
-                                                    numOfTasks: list.numoftasks,
-                                                    setLists,
-                                                }}
-                                            />
-                                        ))}
-                                    </ul>
-                                </div>
+
+                        <div
+                            className="listNamesContainer"
+                            hidden={!showListData}
+                        >
+                            <div className="listNames">
+                                <ul>
+                                    {lists.map((list) => (
+                                        <SideBarListItem
+                                            key={list.id}
+                                            {...{
+                                                listid: list.id,
+                                                listName: list.name,
+                                                listRender: list.render,
+                                                numOfTasks: list.numoftasks,
+                                                handleListRender,
+                                            }}
+                                        />
+                                    ))}
+                                </ul>
                             </div>
-                        )}
+                        </div>
+
                         <div className="createListBtnContainer">
                             <button
                                 className="createListBtn"

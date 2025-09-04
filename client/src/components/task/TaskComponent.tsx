@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, memo } from 'react';
 import { isEqual, cloneDeep } from 'lodash';
 import { TaskType } from '../../types/types';
 import {
@@ -27,7 +27,7 @@ export const Task = ({
     onNewTask,
     onEmptyTask,
 }: TaskProps) => {
-    console.log(`task updated id:${givenTask.id}`);
+    //console.log(`task updated id:${givenTask.id}`);
     const [isNewTask, setIsNewTask] = useState<boolean>(() => newTask || false);
     const [isEditing, setIsEditing] = useState<boolean>(() => newTask || false);
     const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -74,7 +74,10 @@ export const Task = ({
     }
 
     const handleCompletion = useCallback(() => {
-        const updateTask: TaskType = { ...task, completed: !task.completed };
+        const updateTask: TaskType = {
+            ...task,
+            completed: !task.completed,
+        };
         onUpdate(updateTask);
         setTask(updateTask);
     }, [task, onUpdate]);
@@ -129,17 +132,16 @@ export const Task = ({
                         </div>
                     ) : null}
                 </div>
-                {!isNewTask && isHovered && (
-                    <TaskDropDown
-                        {...{
-                            isEditing,
-                            isHovered,
-                            handleOnDelete,
-                            handleOnEmptyTask,
-                            isSubTask,
-                        }}
-                    />
-                )}
+
+                <TaskDropDown
+                    {...{
+                        isEditing,
+                        isHovered,
+                        handleOnDelete,
+                        handleOnEmptyTask,
+                        isSubTask,
+                    }}
+                />
             </div>
         </div>
     );

@@ -1,47 +1,44 @@
-import { useState } from 'react';
-import { ListType } from '../../types/types';
+import { memo, useState } from 'react';
 
 interface SideBarListItemProp {
     listid: number;
     listName: string;
     numOfTasks: number;
-    setLists: React.Dispatch<React.SetStateAction<ListType[]>>;
+    listRender: boolean;
+    handleListRender: (id: number) => void;
 }
 
-export const SideBarListItem = ({
-    listid,
-    listName,
-    numOfTasks,
-    setLists,
-}: SideBarListItemProp) => {
-    const [showListName, setShowListName] = useState<boolean>(true);
-
-    return (
-        <li
-            className="listItem"
-            onClick={() => {
-                setShowListName((prev) => !prev);
-                setLists((prevLists: ListType[]) =>
-                    prevLists.map((list: ListType) =>
-                        list.id != listid
-                            ? list
-                            : { ...list, render: !list.render },
-                    ),
-                );
-            }}
-        >
-            <span className="inputBox">
-                <input
-                    type="checkbox"
-                    checked={showListName}
-                    value={listName}
-                    name={listName}
-                />
-            </span>
-            <span className="listName">{listName}</span>
-            <span className="slistTasks">
-                <span>{numOfTasks}</span>
-            </span>
-        </li>
-    );
-};
+export const SideBarListItem = memo(
+    ({
+        listid,
+        listName,
+        numOfTasks,
+        handleListRender,
+        listRender,
+    }: SideBarListItemProp) => {
+        const [showListName, setShowListName] = useState<boolean>(listRender);
+        // console.log(`sideBarListItem rendered id: ${listid}`);
+        return (
+            <li
+                className="listItem"
+                onClick={() => {
+                    setShowListName((prev) => !prev);
+                    handleListRender(listid);
+                }}
+            >
+                <span className="inputBox">
+                    <input
+                        type="checkbox"
+                        checked={showListName}
+                        value={listName}
+                        name={listName}
+                    />
+                </span>
+                <span className="listName">{listName}</span>
+                <span className="slistTasks">
+                    <span>{numOfTasks}</span>
+                </span>
+            </li>
+        );
+    },
+);

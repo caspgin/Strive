@@ -1,0 +1,61 @@
+
+const renderArray = (
+    sortedTasks: TaskType[],
+    handleUpdate,
+    handleDelete,
+    handleNewTask,
+    handleEmptyTask,
+) => {
+    let isPastTasksSection = false;
+    let isNoDateSection = false;
+    const now = new Date();
+    const pastElements: JSX.Element[] = [];
+    console.log(`sortedTasks ${sortedTasks}`);
+    let lastIndexOfPast = -1;
+
+    for (let index = 0; index < sortedTasks.length; index++) {
+        const element = sortedTasks[index];
+        if (element.date && element.date.getTime() < now.getTime()) {
+            lastIndexOfPast = index;
+        }
+    }
+
+    for (let index = 0; index < sortedTasks.length; index++) {
+        const element = sortedTasks[index];
+        console.log(`${index} : ${element} : ${element.date}`);
+        if (
+            !isPastTasksSection &&
+            element.date &&
+            element.date.getTime() < now.getTime()
+        ) {
+            pastElements.push(
+                <div key="past-label" className="dateLabel">
+                    Past
+                </div>,
+            );
+            isPastTasksSection = true;
+        }
+        if (!isNoDateSection && !element.date) {
+            isPastTasksSection = true; // Prevents the past label from rendering later
+            pastElements.push(
+                <div key="no-date-label" className="dateLabel">
+                    No Date
+                </div>,
+            );
+            isNoDateSection = true;
+        }
+        pastElements.push(
+            <Task
+                givenTask={element}
+                onDelete={handleDelete}
+                onUpdate={handleUpdate}
+                key={element.uuid}
+                newTask={element.id == undefined}
+                onNewTask={handleNewTask}
+                onEmptyTask={handleEmptyTask}
+            />,
+        );
+    }
+
+    return pastElements;
+};

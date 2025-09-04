@@ -25,7 +25,7 @@ export const getAllLists = async () => {
 
 export const deleteList = async (id) => {
     idValidation(id);
-    const result = await listRepository.deleteList(listid);
+    const result = await listRepository.deleteList(id);
     return result;
 };
 

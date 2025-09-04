@@ -33,25 +33,27 @@ export const deleteList = async (id) => {
 };
 
 export const updateList = async (id, list) => {
-    const columns = Object.keys(List);
-    const setParams = columns.map((key, index) => `${key} = $${index + 1}`);
-
-    const query = `UPDATE ${client.schema}.${client.listTable} SET ${setParams} WHERE id = ${columns.length + 1} RETURNING *`;
+    const columns = Object.keys(list);
+    const setParams = columns
+        .map((key, index) => `${key} = $${index + 1}`)
+        .join();
+    const query = `UPDATE ${client.schema}.${client.listTable} SET ${setParams} WHERE id = $${columns.length + 1} RETURNING *`;
 
     const values = columns.map((key) => list[key]);
     values.push(id);
 
+    console.log(`${setParams} and ${values}`);
     const result = await client.query(query, values);
     return result.rows[0];
 };
 
 export const incrementTask = async (id) => {
-    const query = `UPDATE ${client.schema}.${client.listTable} SET "numoftasks" = "numoftasks" + 1 WHERE id = ${id} RETURNING *`;
+    const query = `UPDATE ${client.schema}.${client.listTable} SET "numoftasks" = "numoftasks" + 1 WHERE id = ${id} RETURNING * `;
     const result = await client.query(query);
     return result.rows[0];
 };
 export const decrementTask = async (id) => {
-    const query = `UPDATE ${client.schema}.${client.listTable} SET "numoftasks" = "numoftasks" - 1 WHERE id = ${id} RETURNING *`;
+    const query = `UPDATE ${client.schema}.${client.listTable} SET "numoftasks" = "numoftasks" - 1 WHERE id = ${id} RETURNING * `;
     const result = await client.query(query);
     return result.rows[0];
 };

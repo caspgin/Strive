@@ -9,7 +9,7 @@ export interface TaskIconProp {
 export const TaskIcon = React.memo(
     ({ id, completed, handleCompletion }: TaskIconProp) => {
         const [hovered, setHovered] = useState<boolean>(false);
-        console.log(`taskIcon called for task:${id}`);
+        //console.log(`taskIcon called for task:${id}`);
         return (
             <div className="taskIcon">
                 <button
@@ -17,7 +17,6 @@ export const TaskIcon = React.memo(
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                     onClick={(event) => {
-                        console.log('clicked');
                         event.stopPropagation();
                         handleCompletion();
                     }}

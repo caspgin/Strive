@@ -83,3 +83,15 @@ export const createList = async (request, response, next) => {
         next(error);
     }
 };
+
+export const updateList = async (request, response, next) => {
+    try {
+        const { id } = request.params || null;
+        const { list } = request.body || null;
+        console.log(list);
+        const result = await listService.updateList(id, list);
+        response.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+};

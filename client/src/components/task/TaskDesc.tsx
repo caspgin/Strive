@@ -10,7 +10,7 @@ interface TaskDescProp {
 
 export const TaskDesc = memo(
     ({ isEditing, taskDesc, setTask }: TaskDescProp) => {
-        console.log(`taskDesc updated`);
+        //console.log(`taskDesc updated`);
         const [desc, setDesc] = useState<string>(() => taskDesc || '');
         const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 

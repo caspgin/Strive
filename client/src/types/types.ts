@@ -35,6 +35,11 @@ export interface RawTaskType {
     sort_order: number;
 }
 
+export interface Position {
+    top: number;
+    left: number;
+}
+
 export enum SortBy {
     UserOrder = 'User Order',
     Alphabetically = 'Alphabetically',

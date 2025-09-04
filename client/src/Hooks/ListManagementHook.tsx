@@ -43,7 +43,7 @@ export const useListManagement = () => {
 
     const updateList = useCallback((updatedList: ListType) => {
         axios
-            .put(`/v2/lists/${updatedList.id}`, { updatedList })
+            .put(`/v2/lists/${updatedList.id}`, { list: updatedList })
             .then(() => {
                 setLists((prevLists) =>
                     prevLists.map((list) =>
@@ -72,12 +72,30 @@ export const useListManagement = () => {
         }
     }, []);
 
+    const updateTaskCount = useCallback(
+        async (id: number, isIncreasing: boolean) => {
+            setLists((prevLists) =>
+                prevLists.map((list) =>
+                    list.id != id
+                        ? list
+                        : {
+                              ...list,
+                              numoftasks: isIncreasing
+                                  ? Number(list.numoftasks) + 1
+                                  : Number(list.numoftasks) - 1,
+                          },
+                ),
+            );
+        },
+        [],
+    );
+
     return {
         lists,
-        setLists,
         deleteList,
         createNewList,
         updateList,
+        updateTaskCount,
         err,
     };
 };

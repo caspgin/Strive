@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ListType, TaskType } from '../types/types';
+import { TaskType } from '../types/types';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { normalizeTaskArray } from '../utilities';
 
 export const useTaskManagement = (
     listid: number,
-    setLists: React.Dispatch<React.SetStateAction<ListType[]>>,
+    updateTaskCount: (id: number, isIncreasing: boolean) => void,
 ) => {
     const [tasks, setTasks] = useState<TaskType[]>([]);
     const [loading, setLoading] = useState(true);
@@ -65,6 +65,7 @@ export const useTaskManagement = (
                         );
                         return;
                     }
+                    updateTaskCount(listid, false);
                 }
                 //Update the tasks state
                 setTasks((prevTasks: TaskType[]) =>
@@ -77,24 +78,11 @@ export const useTaskManagement = (
                         return true;
                     }),
                 );
-                //Update numoftasks in list
-                if (id) {
-                    setLists((prevLists: ListType[]) =>
-                        prevLists.map((list) =>
-                            listid != list.id
-                                ? list
-                                : {
-                                      ...list,
-                                      numoftasks: Number(list.numoftasks) - 1,
-                                  },
-                        ),
-                    );
-                }
             } catch (error) {
                 setErr(error);
             }
         },
-        [listid, setLists],
+        [listid, updateTaskCount],
     );
 
     const handleNewTask = useCallback(
@@ -112,23 +100,13 @@ export const useTaskManagement = (
                         };
                         return [...filteredTasks, newTask];
                     });
-
-                    setLists((prevLists) =>
-                        prevLists.map((list) =>
-                            listid != list.id
-                                ? list
-                                : {
-                                      ...list,
-                                      numoftasks: Number(list.numoftasks) + 1,
-                                  },
-                        ),
-                    );
+                    updateTaskCount(listid, true);
                 })
                 .catch((error) => {
                     setErr(error);
                 });
         },
-        [listid, setLists],
+        [listid, updateTaskCount],
     );
 
     const getMaxSortOrder = useCallback(

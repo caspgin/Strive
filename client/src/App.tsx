@@ -1,13 +1,24 @@
-import { ListComponent, ListName, SideBar } from './components';
+import {
+    DropDownMenuDummy,
+    ListComponent,
+    ListName,
+    SideBar,
+} from './components';
 import { ListType } from './types/types';
 import { useListManagement } from './Hooks/ListManagementHook';
 import { useState } from 'react';
 import './css/App.css';
 
 function App() {
-    console.log('app rendered');
-    const { lists, setLists, deleteList, createNewList, updateList, err } =
-        useListManagement();
+    //console.log('app rendered');
+    const {
+        lists,
+        deleteList,
+        createNewList,
+        updateList,
+        updateTaskCount,
+        err,
+    } = useListManagement();
     const [showNameBox, setShowNameBox] = useState<boolean>(false);
     const [listInfo, setListInfo] = useState<ListType | null>(null);
     function updateListName(name: string) {
@@ -28,7 +39,7 @@ function App() {
                         lists,
                         setShowNameBox,
                         setListInfo,
-                        setLists,
+                        updateList,
                     }}
                 />
             </section>
@@ -42,7 +53,7 @@ function App() {
                                 deleteList,
                                 setShowNameBox,
                                 setListInfo,
-                                setLists,
+                                updateTaskCount,
                             }}
                         />
                     ))}
@@ -57,6 +68,9 @@ function App() {
                     />
                 </div>
             )}
+            <div>
+                <DropDownMenuDummy />
+            </div>
         </div>
     );
 }
