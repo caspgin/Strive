@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, memo } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { isEqual, cloneDeep } from 'lodash';
 import { TaskType } from '../../types/types';
 import {
@@ -7,7 +7,6 @@ import {
 	TaskDesc,
 	TaskDropDown,
 	TaskIcon,
-	DropDownItem,
 } from '../../components';
 import '../../css/task.css';
 
@@ -134,17 +133,19 @@ export const Task = ({
 					) : null}
 				</div>
 				{task.completed ? (
-					<div>
-						<DropDownItem
-							{...{
-								title: '',
-								icon_name: 'delete',
-								handleClick: (event) => {
-									event.stopPropagation();
-									handleOnDelete();
-								},
-							}}
-						/>
+					<div className="completed-sideBtn">
+						{(isEditing || isHovered) && (
+							<div className="deleteBtnContainer">
+								<button
+									onClick={handleOnDelete}
+									className="deleteBtn"
+								>
+									<span className="material-symbols-outlined">
+										delete
+									</span>
+								</button>
+							</div>
+						)}
 					</div>
 				) : (
 					<TaskDropDown
