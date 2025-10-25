@@ -55,19 +55,24 @@ export const updateTaskbyId = async (request, response, next) => {
         next(error);
     }
 };
-export const getAllLists = async (_, response, next) => {
+
+//Custom GET
+//Returns all pending and numOfTasks most recent completed
+//TODO: get most recent completed  tasks
+export const getTasksByListId = async (request, response, next) => {
     try {
-        const result = await listService.getAllLists();
+        const { listid } = request.params || null;
+        const { num_of_tasks } = request.params || 0;
+        const result = await listService.getAllPendingTasks(listid);
         response.status(200).json(result);
     } catch (error) {
         next(error);
     }
 };
 
-export const getTasksByListId = async (request, response, next) => {
+export const getAllLists = async (_, response, next) => {
     try {
-        const { listid } = request.params || null;
-        const result = await listService.getAllTasks(listid);
+        const result = await listService.getAllLists();
         response.status(200).json(result);
     } catch (error) {
         next(error);

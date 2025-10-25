@@ -11,6 +11,11 @@ export const getAllTasks = async (listid) => {
     return result;
 };
 
+export const getAllPendingTasks = async (listid) => {
+    idValidation(listid);
+    return await listRepository.getPendingTasks(listid);
+};
+
 export const create = async (name) => {
     nameValidation(name);
     const list = new List({ name });
