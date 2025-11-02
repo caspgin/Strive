@@ -1,0 +1,43 @@
+.listCompletedHeader {
+	all: unset;
+	cursor: pointer;
+	display: flex;
+	width: 100%;
+	min-height: 40px;
+	max-height: 40px;
+	align-items: center;
+}
+
+.listCompletedHeaderIconContainer {
+	margin-left: 1.1rem;
+	display: grid;
+	justify-content: center;
+	align-items: center;
+}
+
+.listCompletedHeaderIcon {
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	border-radius: 100%;
+	width: 30px;
+	aspect-ratio: 1;
+
+	span {
+		display: inline-block;
+		font-size: 1.3rem;
+	}
+}
+
+.listCompletedHeaderIcon:hover {
+	background-color: #222222;
+}
+
+.listCompletedHeaderLabel {
+	margin-left: 0.5rem;
+	flex-grow: 1;
+
+	span:last-child {
+		margin-left: 0.3rem;
+	}
+}

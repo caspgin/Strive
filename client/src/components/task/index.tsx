@@ -5,3 +5,4 @@ export { TaskIcon } from './TaskIcon';
 export { TaskName } from './TaskName';
 export { TaskTime } from './TaskTime';
 export { Task } from './TaskComponent';
+export { TaskCompleted } from './TaskCompleted';

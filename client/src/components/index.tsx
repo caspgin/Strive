@@ -7,6 +7,7 @@ export {
     TaskName,
     TaskTime,
     Task,
+    TaskCompleted,
 } from './task';
 export {
     MonthNavigation,

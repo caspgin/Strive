@@ -1,103 +1,103 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-    --taskList-background: #131314;
-    --tasks-on-background: #e3e3e3;
-    --task-not-active: 'transparent';
-    --task-active: #232428;
-    --addTask-background-hover: #1f2226;
-    --addTask-color: #a0bded;
-    --taskIcon-background-hover: #3f4040;
-    --editButton-background: #9bbbef;
-    --editButton-color: #062e6f;
-    --DatePicker-background: #282a2c;
-    --DatePicker-selected-background: #a8c7fa;
-    --DatePicker-today-background: #4988ba;
-    --Date-border-color: #5f6368;
-    --Date-color-present: #8ab4f8;
-    --Date-color-future: #c4c7c5;
-    --Date-color-past: #f2b8b5;
-    --Time-background-color: #333537;
-    --App-background-1: #1b1b1b;
-    --Time-hover-background: #414345;
-    --start-day: 1;
+	--taskList-background: #131314;
+	--tasks-on-background: #e3e3e3;
+	--task-not-active: 'transparent';
+	--task-active: #232428;
+	--addTask-background-hover: #1f2226;
+	--addTask-color: #a0bded;
+	--taskIcon-background-hover: #3f4040;
+	--editButton-background: #9bbbef;
+	--editButton-color: #062e6f;
+	--DatePicker-background: #282a2c;
+	--DatePicker-selected-background: #a8c7fa;
+	--DatePicker-today-background: #4988ba;
+	--Date-border-color: #5f6368;
+	--Date-color-present: #8ab4f8;
+	--Date-color-future: #c4c7c5;
+	--Date-color-past: #f2b8b5;
+	--Time-background-color: #333537;
+	--App-background-1: #1b1b1b;
+	--Time-hover-background: #414345;
+	--start-day: 1;
 }
 
 .roboto-medium {
-    font-family: 'Roboto';
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
+	font-family: 'Roboto';
+	font-optical-sizing: auto;
+	font-weight: 500;
+	font-style: normal;
 }
 
 .roboto-semimedium {
-    font-family: 'Roboto';
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
+	font-family: 'Roboto';
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
 }
 
 .material-symbols-outlined {
-    font-size: 1.6rem;
-    color: white;
+	font-size: 1.6rem;
+	color: white;
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
+	width: 5px;
 }
 
 ::-webkit-scrollbar:horizontal {
-    height: 5px;
+	height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #555;
-    border-radius: 5px;
+	background-color: #555;
+	border-radius: 5px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: transparent;
+	background-color: transparent;
 }
 
 #app {
-    background-color: var(--App-background-1);
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100vh;
-    width: 100vw;
-    padding: 1rem 0;
+	background-color: var(--App-background-1);
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+	padding: 2rem 0;
 }
 
 .sideBarSection {
-    width: 256px;
-    max-width: 300px;
-    position: relative;
-    height: 100%;
-    flex-shrink: 0;
+	width: 256px;
+	max-width: 300px;
+	position: relative;
+	height: 100%;
+	flex-shrink: 0;
 }
 
 .listAreaSection {
-    padding: 0 12px;
-    position: relative;
-    height: 100%;
-    overflow-x: hidden;
+	padding: 0 12px;
+	position: relative;
+	height: 100%;
+	overflow-x: hidden;
 
-    .listAreaContainer {
-        display: flex;
-        flex-flow: row nowrap;
-        padding: 0 4px 0 12px;
-        height: 100%;
-        overflow-x: scroll;
-        scroll-behavior: smooth;
-    }
+	.listAreaContainer {
+		display: flex;
+		flex-flow: row nowrap;
+		padding: 0 4px 0 12px;
+		height: 100%;
+		overflow-x: scroll;
+		scroll-behavior: smooth;
+	}
 }
 
 .dialogBoxContainer {
-    position: absolute;
-    inset: 0;
-    backdrop-filter: blur(2px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	position: absolute;
+	inset: 0;
+	backdrop-filter: blur(2px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

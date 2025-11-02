@@ -1,5 +1,4 @@
-import { RawTaskType, TaskType, Time } from '../types/types';
-import { v4 as uuidv4 } from 'uuid';
+import { Time } from '../types/types';
 export const monthsName = [
     'Jan',
     'Feb',
@@ -95,4 +94,32 @@ export function getTimeObj(time: string): Time {
         minutes: Number(timeArr[1]),
     };
     return newTime;
+}
+
+export function getWeekDayName(dayNum: number) {
+    switch (dayNum) {
+        case 0:
+            return 'Sun';
+        case 1:
+            return 'Mon';
+        case 2:
+            return 'Tue';
+        case 3:
+            return 'Wed';
+        case 4:
+            return 'Thu';
+        case 5:
+            return 'Fri';
+        case 6:
+            return 'Sat';
+    }
+}
+
+export function isCurrentYear(date: Date) {
+    const now = new Date();
+    if (now.getFullYear() === date.getFullYear()) {
+        return true;
+    } else {
+        return false;
+    }
 }

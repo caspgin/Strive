@@ -1,0 +1,13 @@
+.taskCompleted {
+	margin-top: 0.3rem;
+	width: 100%;
+	display: flex;
+	gap: 5px;
+	font-size: 14px;
+	color: #c4c7c5;
+}
+
+.completionDate {
+	display: flex;
+	gap: 5px;
+}

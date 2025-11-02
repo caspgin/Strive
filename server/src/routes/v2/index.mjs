@@ -19,7 +19,7 @@ v2.delete('/tasks/:id', controller.removeTaskById);
 //Lists Paths
 v2.get('/lists', controller.getAllLists);
 v2.post('/lists', controller.createList);
-v2.get('/lists/:listid/tasks', controller.getTasksByListId);
+v2.get('/lists/:listid/tasks/:num_of_tasks', controller.getTasksByListId);
 v2.put('/lists/:id', controller.updateList);
 
 //404 Error

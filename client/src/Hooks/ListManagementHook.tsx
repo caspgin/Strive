@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ListType } from '../types/types';
+import { ChangeTaskType, ListType } from '../types/types';
 import axios from 'axios';
+import { updateTaskType } from '../utilities/TaskUtility';
 
 export const useListManagement = () => {
     const [lists, setLists] = useState<ListType[]>([]);
@@ -73,18 +74,25 @@ export const useListManagement = () => {
     }, []);
 
     const updateTaskCount = useCallback(
-        async (id: number, isIncreasing: boolean) => {
+        async (id: number, countChange: ChangeTaskType) => {
             setLists((prevLists) =>
-                prevLists.map((list) =>
-                    list.id != id
-                        ? list
-                        : {
-                              ...list,
-                              numoftasks: isIncreasing
-                                  ? Number(list.numoftasks) + 1
-                                  : Number(list.numoftasks) - 1,
-                          },
-                ),
+                prevLists.map((list) => {
+                    if (list.id != id) {
+                        return list;
+                    }
+
+                    const [newPendingCount, newCompletedCount] = updateTaskType(
+                        countChange,
+                        list.num_of_pending_tasks,
+                        list.num_of_completed_tasks,
+                    );
+
+                    return {
+                        ...list,
+                        num_of_pending_tasks: newPendingCount,
+                        num_of_completed_tasks: newCompletedCount,
+                    };
+                }),
             );
         },
         [],

@@ -1,116 +1,117 @@
 .tasks {
-    padding: 0rem 0.5rem;
-    position: relative;
+	padding: 0rem 0.5rem;
+	position: relative;
+	width: 100%;
 
-    &:hover {
-        background-color: var(--task-active);
-    }
+	&:hover {
+		background-color: var(--task-active);
+	}
 
-    &:focus-within {
-        background-color: var(--task-active);
-    }
+	&:focus-within {
+		background-color: var(--task-active);
+	}
+}
 
-    & > div.taskContainer {
-        display: flex;
-        min-height: 30px;
-        padding-left: 0.5rem;
-        padding-right: 0;
-        padding-top: 0.3rem;
+.taskContainer {
+	display: flex;
+	min-height: 30px;
+	padding-left: 0.5rem;
+	padding-right: 0;
+	padding-top: 0.3rem;
+}
 
-        & > div.taskIcon {
-            margin-top: 1.6px;
+.taskIcon {
+	margin-top: 1.6px;
 
-            button {
-                all: unset;
-                display: block;
-                border-radius: 100%;
-                margin-right: 1rem;
-                padding: 4px;
-                padding-right: 0;
-                cursor: pointer;
+	button {
+		all: unset;
+		display: block;
+		border-radius: 100%;
+		margin-right: 1rem;
+		padding: 4px;
+		padding-right: 0;
+		cursor: pointer;
 
-                &:hover {
-                    span {
-                        color: var(--Date-color-present);
-                        font-size: 22px;
-                    }
-                }
+		&:hover {
+			span {
+				color: var(--Date-color-present);
+				font-size: 22px;
+			}
+		}
 
-                span {
-                    display: block;
-                    color: #bcbcbc;
-                    font-size: 20px;
-                    min-width: 22px;
-                    min-height: 22px;
-                    text-align: center;
-                }
+		span {
+			display: block;
+			color: #bcbcbc;
+			font-size: 20px;
+			min-width: 22px;
+			min-height: 22px;
+			text-align: center;
+		}
 
-                .completed {
-                    color: var(--Date-color-present);
-                    font-size: 22px;
-                }
-            }
-        }
+		.completed {
+			color: var(--Date-color-present);
+			font-size: 22px;
+		}
+	}
+}
 
-        & > div.taskData {
-            flex: 1 1;
-            color: #e3e3e3;
+.taskData {
+	flex: 1 1;
+	color: #e3e3e3;
 
-            & > * {
-                margin-top: 0.1rem;
-            }
+	&>* {
+		margin-top: 0.1rem;
+	}
 
-            & > .taskNameContainer {
-                margin-top: 0;
-                min-height: 30px;
-            }
+	&>.taskNameContainer {
+		margin-top: 0;
+		min-height: 30px;
+	}
 
-            & > .editButtonContainer {
-                display: flex;
-                justify-content: flex-end;
-                padding: 2px;
+	&>.editButtonContainer {
+		display: flex;
+		justify-content: flex-end;
+		padding: 2px;
 
-                & > button.editButton {
-                    all: unset;
-                    font-size: 1rem;
-                    padding: 0.5rem 1.5rem;
-                    border-radius: 10px;
-                    background-color: var(--editButton-background);
-                    color: var(--editButton-color);
-                }
-            }
-        }
-    }
+		&>button.editButton {
+			all: unset;
+			font-size: 1rem;
+			padding: 0.5rem 1.5rem;
+			border-radius: 10px;
+			background-color: var(--editButton-background);
+			color: var(--editButton-color);
+		}
+	}
 }
 
 .subTask {
-    padding-left: 2rem;
+	padding-left: 2rem;
 }
 
 .completed-sideBtn {
-    position: absolute;
-    right: 10px;
+	position: absolute;
+	right: 10px;
 
-    .deleteBtn {
-        all: unset;
-        cursor: pointer;
-        padding: 0.2rem;
-        border-radius: 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+	.deleteBtn {
+		all: unset;
+		cursor: pointer;
+		padding: 0.2rem;
+		border-radius: 2rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
-        & > span {
-            font-size: 1.3rem;
-            color: #9aa0a6;
-        }
-    }
+		&>span {
+			font-size: 1.3rem;
+			color: #9aa0a6;
+		}
+	}
 
-    .deleteBtn:hover {
-        background-color: #3f4040;
+	.deleteBtn:hover {
+		background-color: #3f4040;
 
-        & > span {
-            color: white;
-        }
-    }
+		&>span {
+			color: white;
+		}
+	}
 }
