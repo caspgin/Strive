@@ -56,3 +56,10 @@ export type ChangeTaskType =
     | 'DelPending'
     | 'PendingToCompleted'
     | 'CompletedToPending';
+
+export interface DropDownMenuProp {
+    setMenuPositionRef: (node: HTMLDivElement | null) => void;
+    onBlurRef: React.MutableRefObject<HTMLDivElement | null>;
+    menuPos: Vector;
+    closeMenu: () => void;
+}
