@@ -1,7 +1,7 @@
-import { ListComponent, ListName, SideBar } from './components';
+import { ListComponent, ListName, SideBar, TopBar } from './components';
 import { ListType } from './types/types';
 import { useListManagement } from './Hooks/ListManagementHook';
-import { UIEvent, useState } from 'react';
+import { useState } from 'react';
 import './css/App.css';
 import { useScroll } from './Hooks/ScrollHook';
 
@@ -17,7 +17,7 @@ function App() {
     } = useListManagement();
 
     const { scrolled, handleScroll } = useScroll('Horizontal');
-
+    const [showSideBar, setShowSideBar] = useState<boolean>(true);
     const [showNameBox, setShowNameBox] = useState<boolean>(false);
     const [listInfo, setListInfo] = useState<ListType | null>(null);
     function updateListName(name: string) {
@@ -32,30 +32,22 @@ function App() {
 
     return (
         <div id="app">
-            <section id="TopBar">
-                <div className="header">
-                    <div>
-                        <span className="material-symbols-outlined">menu</span>
-                    </div>
-                    <div>
-                        <div></div>
-                        <h1>Strive</h1>
-                    </div>
-                </div>
-            </section>
+            <TopBar {...{ setShowSideBar }} />
             <main id="MainSection">
-                <section
-                    className={`sideBarSection ${scrolled > 0 ? 'scrollingBorderColor' : ''}`}
-                >
-                    <SideBar
-                        {...{
-                            lists,
-                            setShowNameBox,
-                            setListInfo,
-                            updateList,
-                        }}
-                    />
-                </section>
+                {showSideBar && (
+                    <section
+                        className={`sideBarSection ${scrolled > 0 ? 'scrollingBorderColor' : ''}`}
+                    >
+                        <SideBar
+                            {...{
+                                lists,
+                                setShowNameBox,
+                                setListInfo,
+                                updateList,
+                            }}
+                        />
+                    </section>
+                )}
                 <section className="listAreaSection">
                     <div className="listAreaContainer" onScroll={handleScroll}>
                         {lists.map((list: ListType) => (
