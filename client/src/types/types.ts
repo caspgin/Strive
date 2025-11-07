@@ -42,7 +42,6 @@ export interface Vector {
     x: number;
     y: number;
 }
-
 export enum SortBy {
     UserOrder = 'User Order',
     Alphabetically = 'Alphabetically',
@@ -63,3 +62,5 @@ export interface DropDownMenuProp {
     menuPos: Vector;
     closeMenu: () => void;
 }
+
+export type ScrollBorderDir = 'Horizontal' | 'Vertical';

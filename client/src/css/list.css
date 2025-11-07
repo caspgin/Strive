@@ -1,98 +1,110 @@
 .listComponent {
-    margin: 0 4px 4px;
-    border-radius: 1rem;
-    min-width: 300px;
-    max-width: 300px;
-    position: relative;
+	margin: 0 4px 4px;
+	border-radius: 1rem;
+	min-width: 300px;
+	max-width: 300px;
+	position: relative;
 
-    & > div {
-        background-color: var(--taskList-background);
-        width: 100%;
-        border: 1px solid transparent;
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        overflow: inherit;
-        max-height: 100%;
-        position: relative;
-    }
+	&>div {
+		background-color: var(--taskList-background);
+		width: 100%;
+		border: 1px solid transparent;
+		border-radius: 16px;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		max-height: 100%;
+		position: relative;
+	}
 }
 
 .listComponent:hover {
-    & > div {
-        box-shadow:
-            0 1px 2px 0 rgba(0, 0, 0, 0.6),
-            0 1px 3px 1px rgba(0, 0, 0, 0.3);
-    }
+	&>div {
+		box-shadow:
+			0 1px 2px 0 rgba(0, 0, 0, 0.6),
+			0 1px 3px 1px rgba(0, 0, 0, 0.3);
+	}
 }
 
 .listComponent:focus,
 .listComponent:focus-within {
-    & > div {
-        box-shadow: none;
-        border-color: #444746;
-    }
+	&>div {
+		box-shadow: none;
+		border-color: #444746;
+	}
 }
 
 .listComponent:hover,
 .listComponent:focus-within,
 .listComponent:focus {
-    & > div::before {
-        content: '';
-        pointer-events: none;
-        position: absolute;
-        height: 4px;
-        width: 36px;
-        margin-top: 4px;
-        left: calc(50% - 18px);
-        z-index: 4000;
-        border-radius: 4px;
-        background-color: #444746;
-        display: block;
-    }
+	&>div::before {
+		content: '';
+		pointer-events: none;
+		position: absolute;
+		height: 4px;
+		width: 36px;
+		margin-top: 4px;
+		left: calc(50% - 18px);
+		z-index: 4000;
+		border-radius: 4px;
+		background-color: #444746;
+		display: block;
+	}
 }
 
 .listHeader {
-    position: sticky;
-    top: 0;
-    cursor: grab;
-    padding-bottom: 8px;
+	position: sticky;
+	top: 0;
+	cursor: grab;
+	padding-bottom: 8px;
 
-    .listTitleMenu {
-        display: flex;
+	.listTitleMenu {
+		display: flex;
 
-        .listTitle {
-            margin-left: 1rem;
-            margin-top: 0.5rem;
-            padding: 0.5rem 0;
-            color: var(--tasks-on-background);
-            font-size: 1.125rem;
-            line-height: 1.5rem;
-            letter-spacing: 0;
-            text-align: left;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            flex: 1 1;
-        }
+		.listTitle {
+			margin-left: 1rem;
+			margin-top: 0.5rem;
+			padding: 0.5rem 0;
+			color: var(--tasks-on-background);
+			font-size: 1.125rem;
+			line-height: 1.5rem;
+			letter-spacing: 0;
+			text-align: left;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			flex: 1 1;
+		}
 
-        .listDropDown {
-            .listSetting {
-                margin-top: 0.5rem;
-                padding: 0.25rem 1rem;
-                display: grid;
-                place-content: center;
-            }
-        }
-    }
+		.listDropDown {
+			.listSetting {
+				margin-top: 0.5rem;
+				padding: 0.25rem 1rem;
+				display: grid;
+				place-content: center;
+			}
+		}
+	}
 }
 
 .listTasks {
-    padding-bottom: 0.5rem;
-    flex-grow: 1;
-    height: 100%;
-    overflow: hidden scroll;
-    scroll-behavior: smooth;
-    display: flex;
-    flex-direction: column;
+	padding-bottom: 0.5rem;
+	flex-grow: 1;
+	height: 100%;
+	overflow-y: scroll;
+	scroll-behavior: smooth;
+	display: flex;
+	flex-direction: column;
+
+	&::-webkit-scrollbar {
+		width: 0px;
+	}
+
+	&:hover::-webkit-scrollbar {
+		width: 5px;
+	}
+}
+
+.scrollingBorderList {
+	border-bottom: 1px solid #444746;
 }

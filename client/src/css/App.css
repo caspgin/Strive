@@ -47,7 +47,7 @@
 }
 
 ::-webkit-scrollbar:horizontal {
-	height: 5px;
+	height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -62,11 +62,33 @@
 #app {
 	background-color: var(--App-background-1);
 	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	height: 100vh;
+	flex-direction: column;
 	width: 100vw;
-	padding: 2rem 0;
+	height: 100vh;
+}
+
+#TopBar {
+	height: 10vh;
+	flex-shrink: 0;
+}
+
+.header {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 10px;
+
+	div {
+		background-color: pink;
+	}
+}
+
+#MainSection {
+	margin: 0;
+	flex-grow: 1;
+	display: flex;
+	justify-content: flex-start;
+	overflow-x: auto;
+	overflow-y: auto;
 }
 
 .sideBarSection {
@@ -77,16 +99,19 @@
 	flex-shrink: 0;
 }
 
+.scrollingBorderColor {
+	border-right: 1px solid #444746;
+}
+
 .listAreaSection {
-	padding: 0 12px;
 	position: relative;
-	height: 100%;
+	flex-grow: 1;
 	overflow-x: hidden;
 
 	.listAreaContainer {
 		display: flex;
 		flex-flow: row nowrap;
-		padding: 0 4px 0 12px;
+		padding: 0 4px 8px 12px;
 		height: 100%;
 		overflow-x: scroll;
 		scroll-behavior: smooth;

@@ -12,8 +12,7 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-*,
-button {
+* {
 	box-sizing: border-box;
 }
 
@@ -27,7 +26,5 @@ body {
 
 #root {
 	display: block;
-	margin: 0 auto;
+	margin: 0 0;
 }
-
-#portal {}
