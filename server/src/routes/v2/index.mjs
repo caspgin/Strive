@@ -21,7 +21,7 @@ v2.get('/lists', controller.getAllLists);
 v2.post('/lists', controller.createList);
 v2.get('/lists/:listid/tasks/:num_of_tasks', controller.getTasksByListId);
 v2.put('/lists/:id', controller.updateList);
-
+v2.delete('/lists/:id', controller.deleteList);
 //404 Error
 v2.use((req, res, next) => {
 	const error = new Error('Not found');

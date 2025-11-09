@@ -128,3 +128,13 @@ export const updateList = async (request, response, next) => {
 		next(error);
 	}
 };
+
+export const deleteList = async (request, response, next) => {
+	try {
+		const { id } = request.params || null;
+		const result = await listService.deleteList(id);
+		response.status(200).json(result);
+	} catch (error) {
+		next(error);
+	}
+};
