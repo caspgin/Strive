@@ -3,14 +3,14 @@ import '../../css/listName.css';
 
 interface ListNameProp {
 	name: string;
-	setShowNameBox: React.Dispatch<React.SetStateAction<boolean>>;
-	updateListName: (name: string) => void;
+	setIsNameDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	handleName: (name: string) => void;
 }
 
 export const ListName = ({
 	name,
-	setShowNameBox,
-	updateListName,
+	setIsNameDialogOpen,
+	handleName,
 }: ListNameProp) => {
 	const [listName, setListName] = useState<string>(name);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ export const ListName = ({
 				containerRef.current &&
 				!containerRef.current.contains(event.target as Node)
 			) {
-				setShowNameBox(false);
+				setIsNameDialogOpen(false);
 			}
 		};
 		document.addEventListener('mousedown', handleMouseDown);
@@ -28,7 +28,7 @@ export const ListName = ({
 		return () => {
 			document.removeEventListener('mousedown', handleMouseDown);
 		};
-	}, [setShowNameBox]);
+	}, [setIsNameDialogOpen]);
 
 	function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
 		setListName(event.target.value);
@@ -43,13 +43,13 @@ export const ListName = ({
 	}
 	function handleUpdate() {
 		if (listName != name) {
-			updateListName(listName);
+			handleName(listName);
 		}
-		setShowNameBox(false);
+		setIsNameDialogOpen(false);
 	}
 
 	function handleCancel() {
-		setShowNameBox(false);
+		setIsNameDialogOpen(false);
 	}
 
 	return (

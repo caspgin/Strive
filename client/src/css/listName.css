@@ -1,6 +1,10 @@
 .listNameContainer {
-	max-width: 400px;
-	min-width: 280px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 280px;
+	height: fit-content;
 	background-color: #282a2c;
 	display: flex;
 	flex-direction: column;
